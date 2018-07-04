@@ -1,0 +1,76 @@
+{
+  "experiment": {
+    "name": "Densenet_450k_trainingdata",
+    "tensorboard_name": "Densenet",
+    "datasets": [
+      {
+        "npy_uid": "2018_07_02_17_24_50_correct_G0_n450000_same_fov_size_3D",
+        "folds": [
+          0
+        ],
+        "mean_std_normalization": true
+      }
+    ],
+    "train_parameters": {
+      "n_epoch": 100,
+      "verbose": 2,
+      "batch_size": 64,
+      "initializer": "he_normal",
+      "optimizer": "adam",
+      "early stopping": 1,
+      "es params": {
+        "monitor": "val_loss",
+        "min_delta": 0.001,
+        "patience": 10,
+        "verbose": 2
+      },
+      "lr": {
+        "policy": "None",
+        "initial_lrate": 0.007096,
+        "reduce lr params": {
+          "monitor": "val_loss",
+          "factor": 0.8,
+          "patience": 8,
+          "min_lr": 1e-07,
+          "epsilon": 1e-05
+        },
+        "schedule params": {
+          "drop": 0.8,
+          "epochs_drop": 1
+        }
+      },
+      "checkpoint": {
+        "monitor": "val_acc"
+      }
+    },
+    "cnn": {
+      "type": "densenet",
+      "dense_net_params": {
+        "depth": {
+          "t2": 7,
+          "abk": 13
+        },
+        "nb_dense_block": {
+          "t2": 5,
+          "abk": 3
+        },
+        "growth_rate": {
+          "t2": 14,
+          "abk": 12
+        }
+      },
+      "gap_n": "search",
+      "pretrained": false,
+      "activation": "relu",
+      "flc_type": 64,
+      "filter_size": {
+        "t2": 10,
+        "abk": 15
+      },
+      "l2_regularizer": 0.001,
+      "l1_regularizer": 0,
+      "dropout": 0.2,
+      "summary": 1
+    }
+  }
+}
