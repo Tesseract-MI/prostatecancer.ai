@@ -177,13 +177,66 @@ async function displayFiducials(instance) {
   }
 }
 
+function makeModelInfoTable() {
+    let html = '<table class="table table-responsive"><tbody>';
+    const instance = Template.instance();
+    const selectedModel = instance.selectedModel.get();
+    const aiModelsInfo = instance.aiModelsInfo.get()[selectedModel];
+    for (key in aiModelsInfo) {
+      html += '<tr>';
+      html += '<td>' + key + '</td>';
+      html += '<td>' + JSON.stringify(aiModelsInfo[key]) + '</td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table>'
+    $('#ai-model-info').html(html);
+}
+
 Template.measurementTableView.onCreated(() => {
   const instance = Template.instance();
+  instance.selectedModel = new ReactiveVar('');
+  instance.aiModelsInfo = new ReactiveVar({});
+  instance.aiModelsName = new ReactiveVar([]);
   instance.feedbackString = new ReactiveVar('');
+  instance.aiModelsActive = new ReactiveVar(true);
   instance.feedbackActive = new ReactiveVar(true);
   instance.disableReport = new ReactiveVar(false);
   Meteor.subscribe('fiducials.public');
 });
+
+
+Template.measurementTableView.onRendered(() => {
+  const instance = Template.instance();
+  $('.roundedButtonWrapper[data-value="aiModel"]').on('click', (eve) => {
+      instance.aiModelsActive.set(true);
+      instance.feedbackActive.set(false);
+      $("#aiModelName option:first").click();
+  });
+  $('.roundedButtonWrapper[data-value="findings"]').on('click', (eve) => {
+      instance.feedbackActive.set(true);
+      instance.aiModelsActive.set(false);
+  });
+
+  $.ajax({url: "https://api.github.com/repos/ProstateWebViewer/p-cad/contents/models", success: function(result) {
+      let nameArr = [];
+      let modelsInfoDict = {};
+      let url = '';
+      result.forEach((val) => {
+          if (val.type === 'dir') {
+            nameArr.push(val.name);
+            url = "https://raw.githubusercontent.com/ProstateWebViewer/p-cad/master/models/" + val.name + "/info.json"
+            $.ajax({url: url, success: function(res) {
+                modelsInfoDict[val.name] = JSON.parse(res);
+                instance.aiModelsInfo.set(modelsInfoDict);
+            }});
+          }
+      });
+      instance.aiModelsName.set(nameArr);
+      instance.selectedModel.set(nameArr[0]);
+  }});
+
+});
+
 
 Template.measurementTableView.helpers({
   fiducials() {
@@ -193,6 +246,10 @@ Template.measurementTableView.helpers({
 
   prostateLabels() {
     return prostateLabels;
+  },
+
+  aiModelsName() {
+    return Template.instance().aiModelsName.get();
   },
 
   getFeedback() {
@@ -205,6 +262,10 @@ Template.measurementTableView.helpers({
 
   isReportDisabled() {
     return Template.instance().disableReport.get();
+  },
+
+  isAiModelActive() {
+    return Template.instance().aiModelsActive.get();
   }
 
 });
@@ -217,14 +278,19 @@ Template.measurementTableView.events({
       $('.roundedButtonWrapper[data-value="result"]').click();
       instance.feedbackActive.set(false);
 
-      $('.roundedButtonWrapper[data-value="findings"]').on('click', (eve) => {
-          instance.feedbackActive.set(true);
-      });
       $('.roundedButtonWrapper[data-value="result"]').on('click', (eve) => {
+          instance.aiModelsActive.set(false);
           instance.feedbackActive.set(false);
       });
 
       displayFiducials(instance);
+  },
+
+  'click .js-aiModelName'(event, instance) {
+    let selectedModel = event.currentTarget.value;
+    instance.selectedModel.set(selectedModel);
+
+    makeModelInfoTable();
   }
 
 });

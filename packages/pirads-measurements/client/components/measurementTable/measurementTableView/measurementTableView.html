@@ -18,10 +18,28 @@
             </div>
         {{/if}}
     </div>
-    <div class="{{#if isFeedbackActive}}hidden{{/if}}">
+    <div class="{{#if or isFeedbackActive isAiModelActive}}hidden{{/if}}">
         <hr style="margin-top:0;">
         <div id="feedback-section">
             <pre>{{ getFeedback }}</pre>
+        </div>
+    </div>
+    <div class="{{#if not isAiModelActive}}hidden{{/if}}">
+        <hr style="margin-top:0;">
+        <div id="ai-section">
+          <form>
+              <div class="form-group">
+                  <label for="ai-models">Available Models</label>
+                  <select class="form-control ai-models js-aiModelName" id="aiModelName">
+                      {{#each name in aiModelsName}}
+                          <option>{{ name }}</option>
+                      {{/each}}
+                  </select>
+              </div>
+          </form>
+          <hr>
+          <p id="table-title">Model Specifications</p>
+          <div id="ai-model-info"></div>
         </div>
     </div>
 </template>

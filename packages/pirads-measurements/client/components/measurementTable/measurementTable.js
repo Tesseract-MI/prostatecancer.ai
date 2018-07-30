@@ -22,6 +22,10 @@ Template.measurementTable.helpers({
         return {
             value: instance.data.measurementTableLayout,
             options: [{
+                value: 'aiModel',
+                lgText: 'AI Settings',
+                class: 'js-toggleable'
+            }, {
                 value: 'findings',
                 lgText: 'Findings',
                 class: 'js-toggleable'

@@ -1,7 +1,50 @@
 import { cornerstoneTools, cornerstone } from 'meteor/ohif:cornerstone';
 import { getNewContext, draw } from './drawing.js';
+import { OHIF } from 'meteor/ohif:core';
 
 const toolType = 'aiFiducial';
+
+
+const TypeToLabelMap = {
+    aiFiducial: 'AI Probe'
+};
+let dropdownItems = [{
+    actionType: 'No',
+    action: ({ nearbyToolData, eventData }) => {
+        const element = eventData.element;
+
+        cornerstoneTools.removeToolState(element, nearbyToolData.toolType, nearbyToolData.tool);
+        cornerstone.updateImage(element);
+    }
+}, {
+    actionType: 'Yes'
+}];
+
+const getTypeText = function(toolData, actionType) {
+
+    return `${actionType}`;
+};
+
+const createDropdown = function(eventData, measurementData) {
+  const nearbyToolData = {};
+  nearbyToolData.toolType = toolType;
+  nearbyToolData.tool = measurementData;
+
+  dropdownItems.forEach(function(item) {
+      item.params = {
+          eventData,
+          nearbyToolData
+      };
+      item.text = getTypeText(nearbyToolData, item.actionType);
+  });
+
+  OHIF.ui.showDropdown(dropdownItems, {
+      menuClasses: 'dropdown-menu-left',
+      event: eventData.event
+  });
+
+};
+
 
 // /////// BEGIN ACTIVE TOOL ///////
 function createNewMeasurement (mouseEventData) {
@@ -20,6 +63,7 @@ function createNewMeasurement (mouseEventData) {
     }
   };
 
+  createDropdown(mouseEventData, measurementData);
 
   return measurementData;
 }
@@ -108,21 +152,16 @@ function onImageRendered (e) {
 // /////// END IMAGE RENDERING ///////
 
 // Module exports
-const aiFiducial = cornerstoneTools.mouseButtonTool({
+cornerstoneTools.aiFiducial = cornerstoneTools.mouseButtonTool({
   createNewMeasurement,
   onImageRendered,
   pointNearTool,
   toolType
 });
 
-const aiFiducialTouch = cornerstoneTools.touchTool({
+cornerstoneTools.aiFiducialTouch = cornerstoneTools.touchTool({
   createNewMeasurement,
   onImageRendered,
   pointNearTool,
   toolType
 });
-
-export {
-  aiFiducial,
-  aiFiducialTouch
-};

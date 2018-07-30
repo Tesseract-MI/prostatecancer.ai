@@ -1,2 +1,1 @@
-// UI Components
 import './lib';
