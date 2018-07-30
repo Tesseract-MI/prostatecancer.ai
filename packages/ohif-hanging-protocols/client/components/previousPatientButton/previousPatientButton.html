@@ -1,0 +1,18 @@
+<template name="previousPatientButton">
+    <div id="{{this.id}}"
+         class="toolbarSectionButton rp-x-1 {{this.classes}} {{activeClass}}"
+         title="{{this.title}}">
+        <div class="svgContainer">
+        {{ #if this.svgLink }}
+        <svg>
+            <use xlink:href={{absoluteUrl this.svgLink}}></use>
+        </svg>
+        {{ else }}
+            <i class={{iconClasses}}></i>
+        {{ /if }}
+        </div>
+        <div class="buttonLabel">
+            {{this.title}}
+        </div>
+    </div>
+</template>

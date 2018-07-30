@@ -1,0 +1,51 @@
+<template name="ohifViewer">
+    {{#header brandHref='http://pirads-trainer.com' headerClasses=instance.headerClasses}}
+        {{#section 'brand'}}
+            <div class="logo-text">PI-RADS Trainer</div>
+        {{/section}}
+        {{#section 'headerAfterBrand'}}
+            {{#if studyListToggleText}}
+                <a href="#" class="btn studyListLinkSection pull-left js-toggle-studyList">
+                    {{studyListToggleText}}
+                </a>
+            {{/if}}
+        {{/section}}
+        {{#section 'headerMenu'}}
+            <span class="user-name pull-left m-r-1">{{userName}}</span>
+            <span class="header-options pull-left m-r-1"> | </span>
+            <span class="header-options pull-left m-r-1">Options</span>
+            <div class="menu-toggle pull-right">
+                <span class="caret-down"></span>
+            </div>
+        {{/section}}
+    {{/header}}
+    {{#if inStudyList}}
+        <br>
+        <div id="how-to">
+            <div id="how-to-content">
+                <br>
+                <p>
+                  PI-RADS Trainer is an open-source platform facilitating reading
+                  and reporting of prostate MRI independent of a radiology workstation,
+                  leveraging publicly available datasets, and accessible at any time.
+                  <br><br>
+                  For each case, the application provides a user with 4 separate MR
+                  image stacks including T2-weighted images, ADC map, high b-value DWI,
+                  and Ktrans map obtained from contrast-enhanced imaging. The user places
+                  a fiducial marker on a suspicious region of the prostate, and may
+                  select the "report" option to be directed to a user interface for
+                  reporting using PI-RADS v2. After entering the finding anatomical
+                  location, and scores for each image, the user may submit the report.
+                  After submission, the application gives the user a feedback message
+                  including projection of the biopsy locations on the 4 image views and
+                  their histologically proven outcomes. Relative distances (in mm) between
+                  the user-defined findings and the biopsy locations are also calculated
+                  and displayed to the user.
+                </p>
+                <br>
+            </div>
+        </div>
+        <br>
+    {{/if}}
+    {{>Template.dynamic template=(choose this.template 'studylist') data=this}}
+</template>

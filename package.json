@@ -1,0 +1,19 @@
+{
+  "name": "ohifviewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "bcrypt": "^2.0.1",
+    "fast-csv": "^2.4.1",
+    "loglevel": "^1.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "METEOR_PACKAGE_DIRS=packages"
+  },
+  "author": "",
+  "license": "MIT"
+}
