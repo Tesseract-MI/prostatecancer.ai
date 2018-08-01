@@ -55,6 +55,11 @@ async function displayFiducials(instance) {
   const fiducials = Fiducials.find({ ProxID: patientName }).fetch();
   const ClinSigCounter = fiducials.filter(v => v.ClinSig).length;
 
+  if (!(fiducials.length)) {
+      instance.feedbackString.set('No result available for this patient!');
+      return;
+  }
+
   if (!('pos' in fiducials[0])) {
       instance.feedbackString.set(''.concat(
         'Annotations:\n',
