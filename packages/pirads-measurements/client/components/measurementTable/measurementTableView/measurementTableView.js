@@ -193,7 +193,7 @@ function makeModelInfoTable() {
       html += '<td>' + aiModelsInfo[key] + '</td>';
       html += '</tr>';
       if (key === 'additional info required') {
-          instance.note.set(aiModelsInfo[key] + ' is additionally needed by the model.');
+          instance.note.set(aiModelsInfo[key] + ' is additionally needed by this model.');
       }
     }
     html += '</tbody></table>'
