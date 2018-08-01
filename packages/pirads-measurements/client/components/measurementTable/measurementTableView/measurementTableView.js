@@ -11,6 +11,7 @@ import { Session } from 'meteor/session';
 import { bindToMeasurementAdded } from '../../../lib/customCommands.js'
 
 Fiducials = new Mongo.Collection('fiducials');
+UserData = new Mongo.Collection('user_data');
 
 function getImageId() {
   var closest;
@@ -126,34 +127,6 @@ async function displayFiducials(instance) {
           });
       });
 
-      function findingsAnalysis() {
-
-        let str = '';
-
-        fiducials.forEach((val) => {
-          const minDistance = Number.MAX_SAFE_INTEGER;
-          const f_id = 0;
-          const patientPoint = new cornerstoneMath.Vector3(val.pos.x, val.pos.y, val.pos.z);
-          fiducialsCollection.find({'studyInstanceUid': studyInstanceUid}).fetch().forEach((value) => {
-              const distance = patientPoint.distanceTo(value.patientPoint).toFixed(2)
-              if (distance < minDistance) {
-                minDistance = distance;
-                f_id = value.id;
-              }
-          });
-          if (f_id) {
-            str = str.concat(
-              'fid '+ f_id + ' is the closest to ',
-              (val.ClinSig) ? 'CSPC-' + val.fid : 'CIPC-' + val.fid,
-              ' with ' + minDistance + ' mm\n'
-            );
-          }
-        });
-
-        return str;
-      }
-
-
 
       instance.feedbackString.set(''.concat(
         'Annotations:\n',
@@ -171,10 +144,37 @@ async function displayFiducials(instance) {
         (ClinSigCounter === 1) ? 'was ' : 'were ',
         'reported by pathology.\n\n',
         'Analysis of your findings:\n',
-        findingsAnalysis(),
+        findingsAnalysis(fiducials, studyInstanceUid),
       ));
       $('#wwwc').trigger("click");
   }
+}
+
+function findingsAnalysis(fiducials, studyInstanceUid) {
+
+  let str = '';
+
+  fiducials.forEach((val) => {
+    const minDistance = Number.MAX_SAFE_INTEGER;
+    const f_id = 0;
+    const patientPoint = new cornerstoneMath.Vector3(val.pos.x, val.pos.y, val.pos.z);
+    fiducialsCollection.find({'studyInstanceUid': studyInstanceUid}).fetch().forEach((value) => {
+        const distance = patientPoint.distanceTo(value.patientPoint).toFixed(2)
+        if (distance < minDistance) {
+          minDistance = distance;
+          f_id = value.id;
+        }
+    });
+    if (f_id) {
+      str = str.concat(
+        'fid '+ f_id + ' is the closest to ',
+        (val.ClinSig) ? 'CSPC-' + val.fid : 'CIPC-' + val.fid,
+        ' with ' + minDistance + ' mm\n'
+      );
+    }
+  });
+
+  return str;
 }
 
 function makeModelInfoTable() {
@@ -192,6 +192,48 @@ function makeModelInfoTable() {
     $('#ai-model-info').html(html);
 }
 
+function saveUserData(instance) {
+    const patientName = instance.data.studies[0].patientName;
+    const fiducials = Fiducials.find({ ProxID: patientName }).fetch();
+    const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
+
+    fiducialsCollection.find({'studyInstanceUid': studyInstanceUid}).fetch().forEach((value) => {
+        let rowId = value.id;
+
+        let userData = {
+            fid: rowId,
+            userId: Meteor.userId(),
+            patientId: OHIF.viewer.metadataProvider.getMetadata(value.imageIds[0]).patient.id,
+            studyInstanceUid: value.studyInstanceUid,
+            locationSide: $('#location-side-'+rowId).first().text(),
+            locationPosition: $('#location-pos-'+rowId).first().text(),
+            t2: $('#t2-'+rowId).first().val(),
+            dwi: $('#dwi-'+rowId).first().val(),
+            dce: $('#dce-'+rowId).first().val(),
+            pirads: $('#pirads-'+rowId).first().val(),
+            report: findingsAnalysis(fiducials, studyInstanceUid).search('fid '+rowId) ? "" : findingsAnalysis(fiducials, studyInstanceUid).trim(),
+            lps: {
+              x: value.patientPoint.x,
+              y: value.patientPoint.y,
+              z: value.patientPoint.z
+            }
+        }
+
+        UserData.insert(userData);
+    });
+}
+
+function checkLocations() {
+    let flag = true;
+    $('.location-data').get().forEach((element) => {
+        if (element.innerHTML === '-') {
+            flag = false;
+            return;
+        }
+    });
+    return flag;
+}
+
 Template.measurementTableView.onCreated(() => {
   const instance = Template.instance();
   instance.selectedModel = new ReactiveVar('');
@@ -201,7 +243,9 @@ Template.measurementTableView.onCreated(() => {
   instance.aiModelsActive = new ReactiveVar(true);
   instance.feedbackActive = new ReactiveVar(true);
   instance.disableReport = new ReactiveVar(false);
+  instance.locationNotSelected = new ReactiveVar(true);
   Meteor.subscribe('fiducials.public');
+  Meteor.subscribe('user_data.public');
 });
 
 
@@ -266,12 +310,24 @@ Template.measurementTableView.helpers({
 
   isAiModelActive() {
     return Template.instance().aiModelsActive.get();
+  },
+
+  isLocationSelected() {
+    return Template.instance().locationNotSelected.get();
   }
 
 });
 
 Template.measurementTableView.events({
   'click .js-getFeedback'(event, instance) {
+
+      if (!(checkLocations())) {
+          instance.locationNotSelected.set(false);
+          return;
+      }
+
+      instance.locationNotSelected.set(true);
+
       instance.disableReport.set(true);
       $('.roundedButtonWrapper[data-value="result"]').removeClass('disabled');
       Session.set('resultGenerated', true);
@@ -284,6 +340,7 @@ Template.measurementTableView.events({
       });
 
       displayFiducials(instance);
+      saveUserData(instance);
   },
 
   'click .js-aiModelName'(event, instance) {

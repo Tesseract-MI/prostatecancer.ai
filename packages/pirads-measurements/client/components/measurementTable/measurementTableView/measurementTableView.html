@@ -10,6 +10,9 @@
                 <textarea id="fid-comment-{{rowItem.id}}" class="form-control" rows="3"></textarea>
             </div>
             <div class="report-area">
+                <div class="location-warning text-center {{#if isLocationSelected}}hidden{{/if}}">
+                  <p style="color:red">Please choose location for all findings.</p>
+                </div>
                 <button class="btn btn-sm {{#if not isReportDisabled}}js-getFeedback{{/if}} {{#if isReportDisabled}}disabled{{/if}}" id="feedback-button">Generate Report</button>
             </div>
         {{else}}
