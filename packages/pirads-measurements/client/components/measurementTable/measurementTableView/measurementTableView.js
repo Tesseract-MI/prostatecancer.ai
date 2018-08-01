@@ -184,7 +184,7 @@ function makeModelInfoTable() {
     const aiModelsInfo = instance.aiModelsInfo.get()[selectedModel];
     for (key in aiModelsInfo) {
       html += '<tr>';
-      html += '<td>' + key + '</td>';
+      html += '<td class="text-bold">' + key + '</td>';
       html += '<td>' + JSON.stringify(aiModelsInfo[key]) + '</td>';
       html += '</tr>';
     }

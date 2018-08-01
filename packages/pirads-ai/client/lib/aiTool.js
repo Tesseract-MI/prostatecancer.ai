@@ -1,48 +1,33 @@
 import { cornerstoneTools, cornerstone } from 'meteor/ohif:cornerstone';
 import { getNewContext, draw } from './drawing.js';
 import { OHIF } from 'meteor/ohif:core';
+import { Session } from 'meteor/session';
 
 const toolType = 'aiFiducial';
 
+const createDialog = (eventData, measurementData) => {
 
-const TypeToLabelMap = {
-    aiFiducial: 'AI Probe'
-};
-let dropdownItems = [{
-    actionType: 'No',
-    action: ({ nearbyToolData, eventData }) => {
-        const element = eventData.element;
+    const nearbyToolData = {};
+    nearbyToolData.toolType = toolType;
+    nearbyToolData.tool = measurementData;
 
-        cornerstoneTools.removeToolState(element, nearbyToolData.toolType, nearbyToolData.tool);
-        cornerstone.updateImage(element);
-    }
-}, {
-    actionType: 'Yes'
-}];
+    const dialogSettings = {
+        removeCloseButton: true,
+        message: 'Do you want to keep this finding?',
+        cancelLabel: 'No',
+        confirmLabel: 'Yes',
+        confirmClass: 'btn-success',
+        cancelClass: 'btn-danger',
+        dialogClass: 'modal-sm',
+        position: {
+            x: eventData.event.clientX+155,
+            y: eventData.event.clientY+130
+        }
+    };
 
-const getTypeText = function(toolData, actionType) {
+    Session.set('nearbyToolData', nearbyToolData);
 
-    return `${actionType}`;
-};
-
-const createDropdown = function(eventData, measurementData) {
-  const nearbyToolData = {};
-  nearbyToolData.toolType = toolType;
-  nearbyToolData.tool = measurementData;
-
-  dropdownItems.forEach(function(item) {
-      item.params = {
-          eventData,
-          nearbyToolData
-      };
-      item.text = getTypeText(nearbyToolData, item.actionType);
-  });
-
-  OHIF.ui.showDropdown(dropdownItems, {
-      menuClasses: 'dropdown-menu-left',
-      event: eventData.event
-  });
-
+    OHIF.ui.showDialog('dialogAi', dialogSettings);
 };
 
 
@@ -63,7 +48,7 @@ function createNewMeasurement (mouseEventData) {
     }
   };
 
-  createDropdown(mouseEventData, measurementData);
+  createDialog(mouseEventData, measurementData);
 
   return measurementData;
 }

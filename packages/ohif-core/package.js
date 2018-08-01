@@ -32,6 +32,7 @@ Package.onUse(function(api) {
         'client/ui/resizable/resizable.styl',
         'client/components/bootstrap/dialog/bootstrap.styl',
         'client/components/bootstrap/dialog/loading.styl',
+        'client/components/bootstrap/dialog/ai.styl',
         'client/components/bootstrap/dialog/progress.styl',
         'client/components/bootstrap/dialog/unsavedChangesDialog.styl',
         'client/components/bootstrap/dropdown/dropdown.styl'

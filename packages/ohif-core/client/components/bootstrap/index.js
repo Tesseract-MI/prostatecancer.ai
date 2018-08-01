@@ -1,4 +1,6 @@
 import './dialog/confirm.html';
+import './dialog/ai.html';
+import './dialog/ai.js';
 import './dialog/form.html';
 import './dialog/form.js';
 import './dialog/header.html';

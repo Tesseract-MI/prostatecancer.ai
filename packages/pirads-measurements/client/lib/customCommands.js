@@ -6,6 +6,7 @@ import { waitUntilExists } from 'jquery.waituntilexists';
 
 fiducialsCollection = new Mongo.Collection('fiducialsCollection', {connection: null});
 const probeSynchronizer = new cornerstoneTools.Synchronizer('cornerstonenewimage', cornerstoneTools.stackImagePositionSynchronizer);
+const toolsToSync = ['probe', 'aiFiducial'];
 let fiducialCounter = {};
 
 
@@ -31,11 +32,11 @@ function isInBoundary(element, coords) {
     return 0 <= coords.x && coords.x <= width && coords.y <= height && 0 <= coords.y;
 }
 
-function drawId(e) {
+function drawId(e, toolType) {
   const eventData = e.detail;
 
   // If we have no toolData for this element, return immediately as there is nothing to do
-  const toolData = cornerstoneTools.getToolState(e.currentTarget, 'probe');
+  const toolData = cornerstoneTools.getToolState(e.currentTarget, toolType);
 
   if (!toolData) {
     return;
@@ -92,7 +93,7 @@ function drawId(e) {
 }
 
 // TODO: clean and comment for all the functions
-function addFiducial(element, measurementData) {
+function addFiducial(element, measurementData, toolType) {
 
     const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
     const studyInstanceUidString = studyInstanceUid.toString();
@@ -104,7 +105,7 @@ function addFiducial(element, measurementData) {
         fiducialCounter[studyInstanceUidString] = 1;
     }
 
-    cornerstoneTools.removeToolState(element, 'probe', measurementData);
+    cornerstoneTools.removeToolState(element, toolType, measurementData);
     cornerstone.updateImage(element);
 
     const patientPoint = getPatientPoint(measurementData.handles.end, element);
@@ -126,7 +127,7 @@ function addFiducial(element, measurementData) {
 
       if (isInBoundary(ele, elementSpecificMeasurementData.handles.end)) {
           $(ele).off('cornerstonetoolsmeasurementadded');
-          cornerstoneTools.addToolState(ele, 'probe', elementSpecificMeasurementData);
+          cornerstoneTools.addToolState(ele, toolType, elementSpecificMeasurementData);
           cornerstone.updateImage(ele);
           bindToMeasurementAdded(ele);
 
@@ -166,16 +167,16 @@ function descriptionMap(seriesDescription) {
 }
 
 
-function removeFiducial(element, measurementData) {
+function removeFiducial(element, measurementData, toolType) {
     if (measurementData.hasOwnProperty('server')) {
         $(element).off('cornerstonetoolsmeasurementadded');
-        cornerstoneTools.addToolState(element, 'probe', measurementData);
+        cornerstoneTools.addToolState(element, toolType, measurementData);
         cornerstone.updateImage(element);
         bindToMeasurementAdded(element);
     }
     else if (measurementData.hasOwnProperty('id')) {
         $('.imageViewerViewport').each((index, ele) => {
-          const toolData = cornerstoneTools.getElementToolStateManager(ele).get(ele, 'probe');
+          const toolData = cornerstoneTools.getElementToolStateManager(ele).get(ele, toolType);
 
           for (let i = 0; i < toolData.data.length; i++) {
               if (toolData.data[i].id === measurementData.id) {
@@ -190,7 +191,7 @@ function removeFiducial(element, measurementData) {
 }
 
 
-function modifyFiducial(element, measurementData) {
+function modifyFiducial(element, measurementData, toolType) {
     const patientPoint = getPatientPoint(measurementData.handles.end, element);
 
     if (measurementData.hasOwnProperty('server')) {
@@ -204,7 +205,7 @@ function modifyFiducial(element, measurementData) {
     else {
         $('.imageViewerViewport').each((index, ele) => {
             if (ele !== element) {
-                const toolData = cornerstoneTools.getElementToolStateManager(ele).get(ele, 'probe');
+                const toolData = cornerstoneTools.getElementToolStateManager(ele).get(ele, toolType);
 
                 for (let i = 0; i < toolData.data.length; i++) {
                     if (toolData.data[i].id === measurementData.id) {
@@ -231,8 +232,8 @@ function modifyFiducial(element, measurementData) {
 function bindToMeasurementAdded(element) {
     $(element).on('cornerstonetoolsmeasurementadded', (eve) => {
         let ev = eve.originalEvent;
-        if (ev.detail.toolType === 'probe') {
-            addFiducial(ev.target, ev.detail.measurementData);
+        if (toolsToSync.includes(ev.detail.toolType)) {
+            addFiducial(ev.target, ev.detail.measurementData, ev.detail.toolType);
         }
     });
 }
@@ -241,8 +242,8 @@ function bindToMeasurementAdded(element) {
 function bindToMeasurementRemoved(element) {
     $(element).on('cornerstonemeasurementremoved', (eve) => {
         let ev = eve.originalEvent;
-        if (ev.detail.toolType === 'probe') {
-            removeFiducial(ev.target, ev.detail.measurementData);
+        if (toolsToSync.includes(ev.detail.toolType)) {
+            removeFiducial(ev.target, ev.detail.measurementData, ev.detail.toolType);
         }
     });
 }
@@ -251,9 +252,9 @@ function bindToMeasurementRemoved(element) {
 function bindToMeasurementModified(element) {
     $(element).on('cornerstonetoolsmeasurementmodified', (eve) => {
         let ev = eve.originalEvent;
-        if (ev.detail.toolType === 'probe') {
+        if (toolsToSync.includes(ev.detail.toolType)) {
             $(this).off('mouseup').one('mouseup', () => {
-                modifyFiducial(ev.target, ev.detail.measurementData);
+                modifyFiducial(ev.target, ev.detail.measurementData, ev.detail.toolType);
             });
         }
     });
@@ -270,11 +271,11 @@ $('.imageViewerViewport').waitUntilExists((index, element) => {
 $('.toolbarSectionTools').waitUntilExists((index, element) => {
     $(element).children().on('click', async (ev) => {
         const activeTool = ev.currentTarget.id;
-        if (activeTool === 'probe') {
+        if (toolsToSync.includes(activeTool)) {
             $('.imageViewerViewport').each((index, ele) => {
                 // TODO: not a good idea to wait till we scroll, see if there is a better way!
                 $(ele).on('cornerstoneimagerendered', (e) => {
-                    drawId(e.originalEvent);
+                    drawId(e.originalEvent, activeTool);
                 });
 
                 probeSynchronizer.add(ele);
