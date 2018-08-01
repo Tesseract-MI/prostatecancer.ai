@@ -1,0 +1,31 @@
+@require '{ohif:design}/app'
+
+.aiModal
+  .text-bold
+    font-weight: bold
+
+  .modal-footer
+    border-top: none
+    padding-top: 0
+
+  .btn-default
+    border: 1px solid #0099cc;
+    theme('background-color', '$primaryBackgroundColor')
+    theme('color', '$defaultColor')
+
+    &:hover
+      theme('background-color', '$uiGrayDarkest')
+      theme('color', '$defaultColor')
+
+    &:active
+      theme('background-color', '$uiGrayDarkest')
+      theme('color', '$defaultColor')
+
+      &:focus
+        theme('background-color', '$primaryBackgroundColor')
+        theme('color', '$textSecondaryColor')
+
+    &:focus
+      theme('border-color', '$hoverColor')
+      theme('background-color', '$uiGrayDarkest')
+      theme('color', '$defaultColor')
