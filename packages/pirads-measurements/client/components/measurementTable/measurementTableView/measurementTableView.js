@@ -190,8 +190,11 @@ function makeModelInfoTable() {
     for (key in aiModelsInfo) {
       html += '<tr>';
       html += '<td class="text-bold">' + key + '</td>';
-      html += '<td>' + JSON.stringify(aiModelsInfo[key]) + '</td>';
+      html += '<td>' + aiModelsInfo[key] + '</td>';
       html += '</tr>';
+      if (key === 'additional info required') {
+          instance.note.set(aiModelsInfo[key] + ' is additionally needed by the model.');
+      }
     }
     html += '</tbody></table>'
     $('#ai-model-info').html(html);
@@ -241,6 +244,7 @@ function checkLocations() {
 
 Template.measurementTableView.onCreated(() => {
   const instance = Template.instance();
+  instance.note = new ReactiveVar('');
   instance.selectedModel = new ReactiveVar('');
   instance.aiModelsInfo = new ReactiveVar({});
   instance.aiModelsName = new ReactiveVar([]);
@@ -249,6 +253,7 @@ Template.measurementTableView.onCreated(() => {
   instance.feedbackActive = new ReactiveVar(true);
   instance.disableReport = new ReactiveVar(false);
   instance.locationNotSelected = new ReactiveVar(true);
+  instance.showSnackbar = new ReactiveVar(true);
   Meteor.subscribe('fiducials.public');
   Meteor.subscribe('user_data.public');
 });
@@ -295,6 +300,10 @@ Template.measurementTableView.helpers({
 
   prostateLabels() {
     return prostateLabels;
+  },
+
+  getNote() {
+    return Template.instance().note.get();
   },
 
   aiModelsName() {
@@ -352,7 +361,18 @@ Template.measurementTableView.events({
     let selectedModel = event.currentTarget.value;
     instance.selectedModel.set(selectedModel);
 
+    if (instance.showSnackbar.get()) {
+        $('#aiModelName').change();
+    }
+
     makeModelInfoTable();
-  }
+  },
+
+  'change .js-option'(event, instance) {
+    instance.showSnackbar.set(false);
+    let snackbar = $('#snackbar').addClass('show');
+    setTimeout(() => { snackbar.removeClass('show'); }, 3000);
+  },
+
 
 });

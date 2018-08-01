@@ -95,6 +95,13 @@ function drawId(e, toolType) {
 // TODO: clean and comment for all the functions
 function addFiducial(element, measurementData, toolType) {
 
+    if (!($('.report-btn a:first').hasClass('active'))) {
+        $('.report-btn a:first').trigger('click');
+        $('.roundedButtonWrapper[data-value="findings"]').trigger('click');
+    } else {
+        $('.roundedButtonWrapper[data-value="findings"]').trigger('click');
+    }
+
     const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
     const studyInstanceUidString = studyInstanceUid.toString();
 
