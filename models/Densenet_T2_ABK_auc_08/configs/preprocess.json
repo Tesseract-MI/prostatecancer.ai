@@ -1,0 +1,45 @@
+{
+  "preprocessing": {
+    "nrrd": "train-original",
+    "fixed_image_type": "t2_tse_tra",
+    "register": false,
+    "n4biasfieldcorrection": false,
+    "random_selection": 0,
+    "window_intensity": {
+      "status": 0,
+      "pl": 1.0,
+      "ph": 99.0,
+      "bounding box": [
+        0,
+        1,
+        0.1,
+        0.9,
+        0.1,
+        0.9
+      ]
+    },
+    "rescale_zero_one": {
+      "status": 0
+    },
+    "resampling": {
+      "status": 1,
+      "spacing": {
+        "t2": [
+          0.5,
+          0.5,
+          3
+        ],
+        "dwi": [
+          2,
+          2,
+          3
+        ],
+        "ktrans": [
+          2,
+          2,
+          3
+        ]
+      }
+    }
+  }
+}
