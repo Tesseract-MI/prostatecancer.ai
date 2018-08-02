@@ -3,7 +3,14 @@ import csv from 'fast-csv';
 import fs from 'fs';
 
 Meteor.startup(function () {
+  UserData = new Mongo.Collection('user_data');
   Fiducials = new Mongo.Collection('fiducials');
+
+  UserData.allow({
+    insert: function (userId, doc) {
+      return true;
+    }
+  });
 
   if (Fiducials.find().count() === 0) {
     const stream = fs.createReadStream("assets/app/findings.csv");
@@ -65,6 +72,10 @@ Meteor.startup(function () {
 
   Meteor.publish('fiducials.public', function() {
     return Fiducials.find();
+  });
+
+  Meteor.publish('user_data.public', function() {
+    return UserData.find();
   });
 
 });

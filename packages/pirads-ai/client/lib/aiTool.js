@@ -2,6 +2,19 @@ import { cornerstoneTools, cornerstone } from 'meteor/ohif:cornerstone';
 import { getNewContext, draw } from './drawing.js';
 import { OHIF } from 'meteor/ohif:core';
 import { Session } from 'meteor/session';
+import { $ } from 'meteor/jquery';
+import { waitUntilExists } from 'jquery.waituntilexists';
+
+$('#aiFiducial').waitUntilExists((index, element) => {
+    $(element).click((eve) => {
+        if (!($('.report-btn a:first').hasClass('active'))) {
+            $('.report-btn a:first').trigger('click');
+            $('.roundedButtonWrapper[data-value="findings"].active').waitUntilExists(() => {
+                $('.roundedButtonWrapper[data-value="aiModel"]').trigger('click');
+            });
+        }
+    });
+});
 
 const toolType = 'aiFiducial';
 

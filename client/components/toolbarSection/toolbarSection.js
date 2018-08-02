@@ -51,6 +51,7 @@ Template.toolbarSection.helpers({
             toggleable: true,
             key: 'rightSidebar',
             value: instance.data.state,
+            class: 'report-btn',
             options: [{
                 value: 'hangingprotocols',
                 iconClasses: 'fa fa-file-text-o',
