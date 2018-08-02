@@ -25,7 +25,6 @@ class Deploy:
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
         loaded_model.load_weights(self.current_dir + "/model/model_checkpoint.hdf5")
-        loaded_model._make_predict_function()
         return loaded_model
 
     def run(self, model, info):
