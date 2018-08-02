@@ -54,8 +54,8 @@ def predict():
     info = request.get_json()
     # cach_dicoms(info)
     if info["model_name"] != default_model:
-        deployer = importlib.import_module(info["model_name"] + ".deploy")
-        deployer.build()
+        deployer = importlib.import_module(info["model_name"] + ".deploy").Deploy()
+        model = deployer.build()
         default_model = info["model_name"]
     result = deployer.run(model, info)
     return result
