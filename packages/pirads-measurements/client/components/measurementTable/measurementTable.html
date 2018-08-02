@@ -1,0 +1,12 @@
+<template name="measurementTable">
+    <div id="measurementTableContainer" class="flex-v">
+        <div class="measurementTableHeader">
+            <div class="measurementTableLayoutChanger viewerRoundedButtonGroup">
+                {{>roundedButtonGroup buttonGroupData}}
+            </div>
+        </div>
+        {{#scrollArea class='measurementTableView flex-grow fit' scrollStep=63}}
+            {{>measurementTableView (clone this)}}
+        {{/scrollArea}}
+    </div>
+</template>

@@ -1,0 +1,67 @@
+<template name="dialogAi">
+    <div id="{{this.id}}" class="modal fade {{this.class}} aiModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog {{this.dialogClass}}" role="document">
+            {{#form class=(concat 'modal-content ' this.formClass) hideValidationBox=true
+                api=(extend instance.api instance.data.api) schema=this.schema
+            }}
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-xs-5">
+                      <p style="margin-top:8px;">Select Zone:</p>
+                    </div>
+                    <div class="col-xs-7">
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default">Pz</button>
+                        <button type="button" class="btn btn-default">Tz</button>
+                        <button type="button" class="btn btn-default">As</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr style="margin-top:0;">
+                <div class="modal-body text-center text-bold">
+                  <p>Waiting for zone to be selected...</p>
+                </div>
+                <hr style="margin:0;">
+                <div class="modal-body">
+                    <div class="messages">
+                        {{#each message in this.messages}}
+                            <div class="message">{{{message}}}</div>
+                        {{else}}
+                            {{#if isError}}
+                                {{>pageError (extend this error=this.details)}}
+                            {{else}}
+                                {{#let message=(choose this.bodyText this.reason this.message (valueIf UI.contentBlock '' 'An error has ocurred.' ))}}
+                                    <div class="message">{{message}}</div>
+                                {{/let}}
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                    {{>UI.contentBlock}}
+                </div>
+                <div class="modal-footer">
+                    {{>section 'dialogFooter'}}
+                    <div class="row">
+                      <div class="col-xs-6">
+                        {{#unless this.hideCancel}}
+                            {{#button action='cancel'
+                                disabled=this.cancelDisabled
+                                class=(concat 'btn btn-cancel btn-block ' (choose this.cancelClass 'btn-secondary'))
+                                tagAttributes=(extend this.tagAttributes data-dismiss='modal')
+                            }}{{choose this.cancelLabel 'Cancel'}}{{/button}}
+                        {{/unless}}
+                      </div>
+                      <div class="col-xs-6">
+                        {{#unless this.hideConfirm}}
+                            {{#button action='confirm'
+                                disabled=this.confirmDisabled
+                                class=(concat 'btn btn-confirm btn-block ' (choose this.confirmClass 'btn-primary'))
+                            }}{{choose this.confirmLabel 'Confirm'}}{{/button}}
+                        {{/unless}}
+                      </div>
+                    </div>
+                </div>
+            {{/form}}
+        </div>
+    </div>
+</template>

@@ -1,0 +1,100 @@
+<template name="aboutModal">
+    {{#dialogSimple (extend this id='aboutModal' dialogClass='modal-lg' title='About')}}
+        <a target='_blank'
+           class='forkOnGithub'
+           href="{{githubUrl}}">
+            <img src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+                 alt="Fork me on GitHub"
+                 data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
+        </a>
+        <div class="logo p-x-3 p-y-3 clearfix">
+            <!-- <svg class="logoImage pull-left">
+                <use xlink:href={{absoluteUrl "packages/ohif_viewerbase/assets/icons.svg#icon-ohif-logo"}}></use>
+            </svg> -->
+            <a class="logoText pull-left"
+               target="_blank"
+               href="http://pirads-trainer.com">
+                PI-RADS Trainer
+            </a>
+        </div>
+        <div class="p-x-1 p-y-1 m-y-2">
+            <!-- <a class="btn btn-default inline"
+               target='_blank'
+               href="https://groups.google.com/forum/#!forum/cornerstone-platform">
+                Visit the forum
+            </a> -->
+            <a class="btn btn-default inline"
+               target='_blank'
+               href="{{githubUrl}}/issues">
+                Report an issue
+            </a>
+        </div>
+        <div class="p-y-1 p-x-1">
+            <h3>About Us</h3>
+            <table class="table table-responsive">
+              <tbody>
+                <tr>
+                    <td>
+                      <p>PI-RADS Trainer is developed and managed by researchers at <a href="http://medi.cs.queensu.ca/">Medical
+                        Informatics Laboratory</a> at Queen's University and <a href="https://www.spl.harvard.edu/">Surgical
+                          Planning Laboratory</a> at Harvard Medical School.</p>
+                      <br>
+                      <p>
+                        The core image viewer is developed with <a target="_blank" href="https://github.com/ohif/Viewers">OHIF viewer</a>
+                        , <a target="_blank" href="https://github.com/cornerstonejs/cornerstone">Cornerstone</a>, and <a href="https://github.com/QIICR/dcmqi">dcmqi</a>.
+                        PIRADS-Trainer is populated with the <a target="_blank" href="https://wiki.cancerimagingarchive.net/display/Public/SPIE-AAPM-NCI+PROSTATEx+Challenges">data</a> from Radboud University Medical
+                        Centre, Nijmegen containing more than 200 MR images with pathological information.
+                      </p>
+                      <br>
+                      <p>PI-RADS is an acronym for Prostate Imaging Reporting and Data System, defining standards of high quality clinical service for multi-parametric Magnetic Resonance Imaging (mpMRI), including image creation and reporting. PI-RADS v2 document can be found <a href="https://www.acr.org/-/media/ACR/Files/RADS/Pi-RADS/PIRADS-V2.pdf">here</a>.</p>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="p-y-1 p-x-1">
+            <h3>Version Information</h3>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Repository URL</td>
+                        <td>
+                            <a target='_blank'
+                               href="{{githubUrl}}">{{githubUrl}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Last Commit Hash</td>
+                        <td>
+                            <a target='_blank' href="{{githubUrl}}/commit/{{gitRev 'long'}}">
+                            {{gitRev 'long'}}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Latest Tag</td>
+                        <td>
+                            <a target='_blank' href="{{githubUrl}}/releases/tag/{{gitRev 'tag'}}">
+                            {{gitRev 'tag'}}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Branch</td>
+                        <td>
+                            <a target='_blank' href="{{githubUrl}}/tree/{{gitRev 'branch'}}">
+                                {{gitRev 'branch'}}
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {{/dialogSimple}}
+</template>

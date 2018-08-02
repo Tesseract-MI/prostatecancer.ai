@@ -1,0 +1,201 @@
+@require '{ohif:design}/app'
+
+html body
+  theme('background-color', '$primaryBackgroundColor')
+  font-family: 'Roboto', 'OpenSans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
+
+html body.stretch
+  height: 100%
+  min-width: 0
+  overflow: hidden
+  position: fixed
+  width: 100%
+
+html hr
+  theme('border-top', '1px solid $uiBorderColor')
+
+body .table > thead > tr > th
+  theme('border-color', '$uiBorderColor')
+
+body ol
+  margin: 0
+  padding-left: 1em
+
+// This is needed for IE11 because svgxuse doesn't allow the browser to capture mouse events on SVG
+svg, use
+  pointer-events: none
+
+input::-ms-clear
+  display: none
+
+label.form-group
+  width: 100%
+
+  &>span.select2
+    display: block
+    width: 100% !important
+
+    span.select2-selection
+      min-height: 34px
+
+      span.select2-selection__rendered
+          height: 34px
+          line-height: 34px
+
+      span.select2-selection__arrow
+          height: 34px
+
+.select-small+span.select2.select2-container span.select2-selection
+  height: 20px
+
+  span.select2-selection__rendered
+    height: 20px
+    line-height: 20px
+    padding-left: 4px
+    padding-right: 12px
+
+  span.select2-selection__arrow
+    height: 20px
+    width: 12px
+
+    &:after
+      font-size: 12px
+      height: 20px
+      line-height: 20px
+      width: 12px
+
+.select2-container-nowrap
+
+  .select2-dropdown
+    display: table
+
+    .select2-results__options li
+      white-space: nowrap
+
+body .select2-container--default .select2-results>.select2-results__options
+  max-height: 320px
+
+.center-table
+  display: table
+  margin-left: auto
+  margin-right: auto
+
+.height-auto
+  height: auto !important
+
+.caret-down
+  display: inline-block
+  width: 0
+  height: 0
+  margin-top: .5rem
+  border-top: 5px solid
+  border-right: 5px solid transparent
+  border-left: 5px solid transparent
+
+.noselect
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+.btn
+  transition(background-color 0.3s ease)
+
+.modal-dialog
+  .modal-content
+    theme('background', '$primaryBackgroundColor')
+    theme('border-color', '$uiBorderColor')
+    theme('color', '$textSecondaryColor')
+
+    .modal-header, .modal-footer
+      theme('border-color', '$uiBorderColor')
+
+    &:hover
+      theme('color', '$textPrimaryColor')
+
+  .card-round
+    theme('background-color', '$uiGrayDark')
+    border-radius(5px)
+    padding: 10px
+
+  .modal-header
+    position: relative
+
+  button.close
+    position: absolute
+    right: 21px
+    top: 50%
+    transform(translateY(-50%))
+    transition(color 0.3s ease)
+
+.button-close, .modal-dialog button.close
+  theme('color', '$textSecondaryColor')
+  height: 20px
+  opacity: 1
+  overflow: hidden
+  padding: 2px
+  text-align: center
+  text-shadow: none
+  width: 20px
+
+  &:hover span
+    &:before, &:after
+      theme('background-color', '$textPrimaryColor')
+
+  &:active span
+    &:before, &:after
+      theme('background-color', '$activeColor')
+
+  span
+    color: transparent
+    display: block
+    font-size: 0
+    height: 100%
+    line-height: 0
+    overflow: hidden
+    position: relative
+    width: 100%
+
+    &:before, &:after
+      theme('background-color', '$textSecondaryColor')
+      content: ' '
+      display: block
+      height: 2px
+      transition(background-color 0.3s ease)
+      width: 19px
+
+    &:before
+      left: 1px
+      position: absolute
+      top: 1px
+      transform(rotate(45deg))
+      transform-origin(1px 50%)
+
+    &:after
+      right: 1px
+      position: absolute
+      top: 1px
+      transform(rotate(-45deg))
+      transform-origin(calc(100% - 1px) 50%)
+
+.full-width
+  width: 100%
+
+.full-height
+  height: 100%
+
+.flex-h
+  display: flex
+  flex-direction: row
+
+.flex-v
+  display: flex
+  flex-direction: column
+
+.flex-grow
+  flex-grow: 1
+
+.nowrap
+  white-space: nowrap

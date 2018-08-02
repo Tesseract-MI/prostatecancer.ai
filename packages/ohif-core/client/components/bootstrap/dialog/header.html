@@ -1,0 +1,18 @@
+<template name="dialogHeader">
+    <div class="modal-header">
+        {{>section 'dialogHeader'}}
+        {{#if or this.title (hasSection 'dialogHeader')}}
+            {{#if not removeCloseButton}}
+                {{#button class='close' action='cancel'
+                    tagAttributes=(extend this.tagAttributes
+                        data-dismiss='modal' aria-label='Close'
+                    )
+                }}<span aria-hidden="true">&times;</span>{{/button}}
+            {{/if}}
+            <h4 class="modal-title">
+                {{#if this.titleIcon}}<i class="{{this.titleIcon}}"></i>{{/if}}
+                <span>{{this.title}}</span>
+            </h4>
+        {{/if}}
+    </div>
+</template>

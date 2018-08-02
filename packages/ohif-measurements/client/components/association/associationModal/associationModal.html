@@ -1,0 +1,10 @@
+<template name="dialogStudyAssociation">
+    {{#dialogForm (extend this
+        schema=instance.schema
+        dialogClass='modal-lg'
+        title='Study Association'
+        confirmLabel='Save'
+    )}}
+        {{>studyAssociationTable}}
+    {{/dialogForm}}
+</template>
