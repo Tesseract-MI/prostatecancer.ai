@@ -7,32 +7,33 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-xs-5">
-                      <p style="margin-top:8px;">Select Zone:</p>
+                      <p style="margin-top:8px;" class="text-bold">Select Zone:</p>
                     </div>
                     <div class="col-xs-7">
                       <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-default">Pz</button>
-                        <button type="button" class="btn btn-default">Tz</button>
-                        <button type="button" class="btn btn-default">As</button>
+                        <button type="button" class="btn btn-default js-predict">Pz</button>
+                        <button type="button" class="btn btn-default js-predict">Tz</button>
+                        <button type="button" class="btn btn-default js-predict">As</button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <hr style="margin-top:0;">
-                <div class="modal-body text-center text-bold">
-                  <p>Waiting for zone to be selected...</p>
+                <hr style="margin-top:0; margin-bottom:0;">
+                <div class="modal-body text-center">
+                  <p class="text-bold">AI Prediction</p>
+                  <p id="ai-prediction" style="margin-bottom:0">Waiting for zone to be selected...</p>
                 </div>
                 <hr style="margin:0;">
                 <div class="modal-body">
                     <div class="messages">
                         {{#each message in this.messages}}
-                            <div class="message">{{{message}}}</div>
+                            <div class="message text-bold">{{{message}}}</div>
                         {{else}}
                             {{#if isError}}
                                 {{>pageError (extend this error=this.details)}}
                             {{else}}
                                 {{#let message=(choose this.bodyText this.reason this.message (valueIf UI.contentBlock '' 'An error has ocurred.' ))}}
-                                    <div class="message">{{message}}</div>
+                                    <div class="message text-bold">{{message}}</div>
                                 {{/let}}
                             {{/if}}
                         {{/each}}

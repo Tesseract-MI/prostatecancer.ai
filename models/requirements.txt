@@ -1,0 +1,10 @@
+Flask==0.12.3
+numpy==1.15.0
+pandas==0.23.3
+SimpleITK==1.1.0
+tqdm==4.24.0
+Keras==2.0.3
+requests==2.19.1
+tensorflow==1.8.0
+Flask-Cors==3.0.6
+h5py==2.8.0

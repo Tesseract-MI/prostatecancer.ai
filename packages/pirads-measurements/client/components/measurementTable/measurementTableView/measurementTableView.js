@@ -287,6 +287,7 @@ Template.measurementTableView.onRendered(() => {
       });
       instance.aiModelsName.set(nameArr);
       instance.selectedModel.set(nameArr[0]);
+      Session.set('selectedModel', nameArr[0]);
   }});
 
 });
