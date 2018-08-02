@@ -2,9 +2,25 @@ import { Template } from 'meteor/templating';
 import { _ } from 'meteor/underscore';
 import { OHIF } from 'meteor/ohif:core';
 import { Session } from 'meteor/session';
+import { $ } from 'meteor/jquery';
 
 function precise(x) {
   return Number.parseFloat(x).toPrecision(4);
+}
+
+function askAi(data) {
+    const baseUrl = "http://localhost:5000/predict";
+    const url = baseUrl + "?case="+ data.case +"&model_name="+ data.model_name +"&zone="+ data.zone +"&lps_x="+ data.lps[0] +"&lps_y="+ data.lps[1] +"&lps_z="+ data.lps[2];
+    $.ajax({
+      url: url,
+      dataType: "json",
+      success: (result) => {
+          $("#ai-prediction").text("Calculating...");
+          setTimeout(() => {
+            $("#ai-prediction").text(result.description);
+          }, 1000);
+      }
+    });
 }
 
 Template.dialogAi.onCreated(() => {
@@ -79,6 +95,22 @@ Template.dialogAi.onRendered(() => {
 });
 
 Template.dialogAi.events({
+    'click .js-predict'(event, instance) {
+        const patientName = OHIF.viewer.StudyMetadataList.all()[0]._data.patientId;
+        const modelName = Session.get('selectedModel');
+        const zone = event.currentTarget.outerText;
+        const lpsCoord = Session.get('currentFidData');
+
+        const data = {
+          case: patientName,
+          model_name: modelName,
+          zone: zone,
+          lps: [lpsCoord.x,lpsCoord.y,lpsCoord.z]
+        }
+
+        askAi(data);
+    },
+
     keydown(event) {
         const instance = Template.instance(),
               keyCode = event.keyCode || event.which;

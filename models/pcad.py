@@ -7,14 +7,16 @@ from flask import Flask, request
 import sys
 import requests
 
+from flask_cors import CORS
+
 sys.path.append("./")
 sys.path.append("../")
 
 import models.settings as S
 
 app = Flask(__name__)
-app.debug = True
-
+# app.debug = True
+CORS(app)
 
 def safe_mkdir(path):
     try:
@@ -47,11 +49,12 @@ deployer = importlib.import_module(default_model + ".deploy").Deploy()
 model = deployer.build()
 
 
-@app.route('/', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
     global default_model
     global model, deployer
-    info = request.get_json()
+    info = request.args.to_dict()
+    info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
     # cach_dicoms(info)
     if info["model_name"] != default_model:
         deployer = importlib.import_module(info["model_name"] + ".deploy").Deploy()

@@ -6,3 +6,4 @@ tqdm==4.24.0
 Keras==2.2.0
 requests==2.19.1
 tensorflow==1.8.0
+Flask-Cors==3.0.6
