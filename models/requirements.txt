@@ -1,0 +1,8 @@
+Flask==1.0.2
+numpy==1.15.0
+pandas==0.23.3
+SimpleITK==1.1.0
+tqdm==4.24.0
+Keras==2.2.0
+requests==2.19.1
+tensorflow==1.8.0

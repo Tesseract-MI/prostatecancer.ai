@@ -13,6 +13,7 @@ sys.path.append("../")
 import models.settings as S
 
 app = Flask(__name__)
+app.debug = True
 
 
 def safe_mkdir(path):
@@ -58,3 +59,6 @@ def predict():
         default_model = info["model_name"]
     result = deployer.run(model, info)
     return result
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

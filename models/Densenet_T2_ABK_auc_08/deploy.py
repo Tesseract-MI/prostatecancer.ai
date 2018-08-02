@@ -5,18 +5,18 @@ from models.Densenet_T2_ABK_auc_08.utils.helpers import resample_new_spacing
 
 sys.path.append("../")
 from glob import glob
-from models.Densenet_T2_ABK.utils.helpers import *
+from models.Densenet_T2_ABK_auc_08.utils.helpers import *
 import json
 import SimpleITK as sitk
 import models.settings as S
 from keras.models import model_from_json
-
+import tensorflow as tf
 
 class Deploy:
     def __init__(self):
         self.current_dir = os.path.dirname(__file__)
         self.datagen_dict = read_json(self.current_dir + "/configs/datagen.json")['datagen']
-        self.resampling_dict = read_json(self.current_dir + "/configs/preprocessing.json")['preprocessing'][
+        self.resampling_dict = read_json(self.current_dir + "/configs/preprocess.json")['preprocessing'][
             "resampling"]
         self.datagen_dict_specs = self.datagen_dict['specs']
         self.datagen_dict_prep = self.datagen_dict['preprocessing']
@@ -27,6 +27,7 @@ class Deploy:
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
         loaded_model.load_weights(self.current_dir + "/model/model_checkpoint.hdf5")
+        loaded_model._make_predict_function()
         return loaded_model
 
     def run(self, model, info):
@@ -36,6 +37,7 @@ class Deploy:
         t2_test, abk_test, zone_encoding = self.extract_patches()
         t2_test, abk_test = self.mean_std_standarzation(t2_test, abk_test)
         x = [t2_test, abk_test, zone_encoding]
+
         predicted_prob = model.predict(x, verbose=1)
         print("successss" * 10)
         scores = np.concatenate(predicted_prob).ravel()
@@ -58,8 +60,7 @@ class Deploy:
 
     def read_image(self, image_type):
         image_paths = glob(
-            os.path.join(S.nrrd_folder, "train-original",
-                         self.case + '*' + image_type + '*.nrrd'))
+            os.path.join(S.nrrd_folder, self.case + '*' + image_type + '*.nrrd'))
         print(image_paths)
         assert len(image_paths) == 1, print(self.case, "more than one image or zero")
         image = sitk.ReadImage(image_paths[0])
