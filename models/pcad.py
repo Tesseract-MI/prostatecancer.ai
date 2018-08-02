@@ -2,18 +2,20 @@ import importlib
 import json
 import os
 import shutil
-
+from keras import backend as K
 from flask import Flask, request
 import sys
 import requests
-
+from flask_cors import CORS
+import tensorflow as tf
 sys.path.append("./")
 sys.path.append("../")
 
 import models.settings as S
 
 app = Flask(__name__)
-
+# app.debug = True
+CORS(app)
 
 def safe_mkdir(path):
     try:
@@ -44,17 +46,28 @@ def cach_dicoms(info):
 default_model = "Densenet_T2_ABK_auc_08"
 deployer = importlib.import_module(default_model + ".deploy").Deploy()
 model = deployer.build()
+model._make_predict_function()
+graph=tf.get_default_graph()
 
 
-@app.route('/', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
     global default_model
     global model, deployer
-    info = request.get_json()
+    global graph
+    info = request.args.to_dict()
+    info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
     # cach_dicoms(info)
     if info["model_name"] != default_model:
-        deployer = importlib.import_module(info["model_name"] + ".deploy")
-        deployer.build()
+        del deployer
+        deployer = importlib.import_module(info["model_name"] + ".deploy").Deploy()
+        model = deployer.build()
+        model._make_predict_function()
+        graph=tf.get_default_graph()
         default_model = info["model_name"]
-    result = deployer.run(model, info)
+    with graph.as_default():
+        result = deployer.run(model, info)
     return result
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

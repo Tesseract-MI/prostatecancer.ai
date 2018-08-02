@@ -1,0 +1,13 @@
+{
+  "model name": "Densenet_T2_ABK_auc079_nozone",
+  "organ": "Prostate",
+  "modality": "MRI",
+  "task": "significant prostate cancer classification",
+  "data description": "The model is trained on MRI scans from Radboud University Medical Centre containing more than 200 MR images with labels",
+  "model description": "Model architecture is adapted from Densenet and gets input from T2, ADC, BVAL and Ktrans",
+  "additional info required": "",
+  "model performance": "AUC of 0.79 on 5-fold cross validation",
+  "website": "",
+  "citation": "",
+  "version": "0.2"
+}

@@ -1,5 +1,6 @@
 import os
 import sys
+
 sys.path.append("../")
 from glob import glob
 from models.Densenet_T2_ABK_auc_08.utils.helpers import *
@@ -7,6 +8,7 @@ import json
 import SimpleITK as sitk
 import models.settings as S
 from keras.models import model_from_json
+
 
 class Deploy:
     def __init__(self):
@@ -31,14 +33,13 @@ class Deploy:
         print(self.case)
         t2_test, abk_test, zone_encoding = self.extract_patches()
         t2_test, abk_test = self.mean_std_standarzation(t2_test, abk_test)
-        x = [t2_test, abk_test, zone_encoding]
-
+        x = [t2_test, abk_test]
         predicted_prob = model.predict(x, verbose=1)
         print("successss" * 10)
         scores = np.concatenate(predicted_prob).ravel()
         print("predictions: {} ".format(scores))
         description = "Low Possibility of Significant Prostate Cancer"
-        if scores[0] > 0.0845:  # youden's threhoshold
+        if scores[0] > 0.066:  # youden's threhoshold
             description.replace("Low", "High")
         response_dict = {"case": self.info["case"],
                          "description": description,

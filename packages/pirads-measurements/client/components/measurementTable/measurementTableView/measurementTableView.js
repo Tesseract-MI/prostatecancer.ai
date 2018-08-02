@@ -287,6 +287,7 @@ Template.measurementTableView.onRendered(() => {
       });
       instance.aiModelsName.set(nameArr);
       instance.selectedModel.set(nameArr[0]);
+      Session.set('selectedModel', nameArr[0]);
   }});
 
 });
@@ -370,6 +371,7 @@ Template.measurementTableView.events({
 
   'change .js-option'(event, instance) {
     instance.showSnackbar.set(false);
+    Session.set('selectedModel', event.currentTarget.value);
     let snackbar = $('#snackbar').addClass('show');
     setTimeout(() => { snackbar.removeClass('show'); }, 3000);
   },

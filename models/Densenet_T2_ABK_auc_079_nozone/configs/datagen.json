@@ -1,0 +1,80 @@
+{
+  "datagen": {
+    "type": "correct",
+    "only_txt": false,
+    "n_folds": 5,
+    "split_folder_uid": "2018_06_27_18_29_10_5fold_train-original_preprocessed_2018_06_27_17_30_32_abk_2_2_3_t2_05053_all_epsilon_015",
+    "excluded_patinets": [
+      {
+        "patient": "ProstateX-0154",
+        "fid": 3
+      },
+      {
+        "patient": "ProstateX-0105",
+        "fid": 3
+      }
+    ],
+    "specs": {
+      "downsample": 0,
+      "n_training": 600000,
+      "partition": 0,
+      "n_validation": 50000,
+      "validation_less_augmented": {
+        "status": false,
+        "ratio": 0.2
+      },
+      "n_test": 0,
+      "predefined_ijk": {
+        "status": 0,
+        "dataset": "2018_01_08_10_51_41_shift_mm_n100000"
+      },
+      "dimension": 3,
+      "channels": 4,
+      "rigid_aug_specs": {
+        "status": 1,
+        "translation_var": 7,
+        "rotation_var": 0.01
+      },
+      "output_patch_shape": {
+        "same_fov": true,
+        "size": [
+          32,
+          32,
+          5
+        ]
+      }
+    },
+    "preprocessing": {
+      "status": 1,
+      "window_intensity": {
+        "status": 1,
+        "pl": 1.0,
+        "ph": 99.0,
+        "bounding box": [
+          0,
+          1,
+          0.1,
+          0.9,
+          0.1,
+          0.9
+        ]
+      },
+      "rescale_zero_one": {
+        "status": 1
+      }
+    },
+    "augmentation": {
+      "status": 1,
+      "strategy": "each",
+      "n_augs": 3,
+      "aug_type": {
+        "fliplr_rot": 1,
+        "flipud_rot": 1,
+        "x_plane_rotation": 0,
+        "y_plane_rotation": 0,
+        "z_plane_rotation": 1,
+        "flipud_fliplr_rot": 1
+      }
+    }
+  }
+}
