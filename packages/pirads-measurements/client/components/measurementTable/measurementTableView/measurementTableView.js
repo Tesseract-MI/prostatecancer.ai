@@ -10,6 +10,7 @@ import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { bindToMeasurementAdded } from '../../../lib/customCommands.js'
 
+AiPredictions = new Mongo.Collection('aiPredictions', {connection: null});
 Fiducials = new Mongo.Collection('fiducials');
 UserData = new Mongo.Collection('user_data');
 
@@ -160,6 +161,9 @@ function findingsAnalysis(fiducials, studyInstanceUid) {
   let str = '';
 
   fiducials.forEach((val) => {
+    if (!(val.pos)) {
+      return;
+    }
     const minDistance = Number.MAX_SAFE_INTEGER;
     const f_id = 0;
     const patientPoint = new cornerstoneMath.Vector3(val.pos.x, val.pos.y, val.pos.z);
@@ -207,8 +211,11 @@ function saveUserData(instance) {
 
     fiducialsCollection.find({'studyInstanceUid': studyInstanceUid}).fetch().forEach((value) => {
         let rowId = value.id;
+        let aiScores = AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': rowId}).fetch();
 
         let userData = {
+            toolType: value.toolType,
+            aiScores: aiScores,
             fid: rowId,
             userId: Meteor.userId(),
             patientId: OHIF.viewer.metadataProvider.getMetadata(value.imageIds[0]).patient.id,

@@ -5,10 +5,17 @@ import { Session } from 'meteor/session';
 import { $ } from 'meteor/jquery';
 import { waitUntilExists } from 'jquery.waituntilexists';
 
+Session.set('opendAiSettings', false);
+
 $('#aiFiducial').waitUntilExists((index, element) => {
     $(element).click((eve) => {
-        if (!($('.report-btn a:first').hasClass('active'))) {
+        if (!($('.report-btn a:first').hasClass('active')) && !(Session.get('opendAiSettings'))) {
             $('.report-btn a:first').trigger('click');
+            $('.roundedButtonWrapper[data-value="findings"].active').waitUntilExists(() => {
+                $('.roundedButtonWrapper[data-value="aiModel"]').trigger('click');
+            });
+            Session.set('opendAiSettings', true);
+        } else {
             $('.roundedButtonWrapper[data-value="findings"].active').waitUntilExists(() => {
                 $('.roundedButtonWrapper[data-value="aiModel"]').trigger('click');
             });
