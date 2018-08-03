@@ -3,6 +3,6 @@ services:
   pcad:
     build: .
     volumes:
-      - "/home/soheil/Desktop/data:/data"
+      - "/data:/data"
     ports:
       - 5000:5000
