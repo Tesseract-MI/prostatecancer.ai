@@ -38,6 +38,22 @@ function askAi(data) {
     });
 }
 
+function buildDataForPrediction(zone) {
+    const patientName = OHIF.viewer.StudyMetadataList.all()[0]._data.patientId;
+    const modelName = Session.get('selectedModel');
+    const lpsCoord = Session.get('currentFidLps');
+
+    const data = {
+      fid: Session.get('lastFidId'),
+      case: patientName,
+      model_name: modelName,
+      zone: zone,
+      lps: [lpsCoord.x,lpsCoord.y,lpsCoord.z]
+    }
+
+    return data;
+}
+
 Template.dialogAi.onCreated(() => {
     Meteor.subscribe('aiPredictions');
     const instance = Template.instance();
@@ -112,20 +128,9 @@ Template.dialogAi.onRendered(() => {
 
 Template.dialogAi.events({
     'click .js-predict'(event, instance) {
-        const patientName = OHIF.viewer.StudyMetadataList.all()[0]._data.patientId;
-        const modelName = Session.get('selectedModel');
         const zone = event.currentTarget.outerText;
-        const lpsCoord = Session.get('currentFidLps');
 
-        const data = {
-          fid: Session.get('lastFidId'),
-          case: patientName,
-          model_name: modelName,
-          zone: zone,
-          lps: [lpsCoord.x,lpsCoord.y,lpsCoord.z]
-        }
-
-        askAi(data);
+        askAi(buildDataForPrediction(zone));
     },
 
     keydown(event) {
@@ -152,5 +157,13 @@ Template.dialogAi.helpers({
     isError() {
         const data = Template.instance().data;
         return data instanceof Error || (data && data.error instanceof Error);
+    },
+
+    showZone() {
+        const flag = Session.get('modelWithZone');
+        if (!flag) {
+            askAi(buildDataForPrediction(''));
+        }
+        return flag;
     }
 });

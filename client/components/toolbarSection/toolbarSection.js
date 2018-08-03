@@ -100,17 +100,17 @@ Template.toolbarSection.helpers({
         });
 
         buttonData.push({
-            id: 'probe',
-            title: 'Fiducial',
-            classes: 'imageViewerTool',
-            iconClasses: 'fa fa-dot-circle-o'
-        });
-
-        buttonData.push({
             id: 'aiFiducial',
             title: 'AI Probe',
             classes: 'imageViewerTool',
             iconClasses: 'fa fa-magic'
+        });
+
+        buttonData.push({
+            id: 'probe',
+            title: 'Fiducial',
+            classes: 'imageViewerTool',
+            iconClasses: 'fa fa-dot-circle-o'
         });
 
         buttonData.push({
