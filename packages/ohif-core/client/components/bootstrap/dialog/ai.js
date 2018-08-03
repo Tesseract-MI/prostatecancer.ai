@@ -12,7 +12,7 @@ function precise(x) {
 
 function askAi(data) {
     const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
-    const baseUrl = "206.189.232.24:5000/predict";
+    const baseUrl = "http://206.189.232.24:5000/predict";
     const url = baseUrl + "?case="+ data.case +"&model_name="+ data.model_name +"&zone="+ data.zone +"&lps_x="+ data.lps[0] +"&lps_y="+ data.lps[1] +"&lps_z="+ data.lps[2];
     $("#ai-prediction").text("Calculating...");
     $.ajax({
