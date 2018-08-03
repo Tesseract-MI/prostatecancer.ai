@@ -17,7 +17,7 @@ function getPatientPoint(imagePoint, element) {
 
     const result = cornerstoneTools.imagePointToPatientPoint(imagePoint, imagePlane);
 
-    Session.set('currentFidData', result);
+    Session.set('currentFidLps', result);
 
     return result;
 }
@@ -148,7 +148,9 @@ function addFiducial(element, measurementData, toolType) {
     });
 
     if (!measurementData.hasOwnProperty('server')) {
+        Session.set('lastFidId', fiducialCounter[studyInstanceUidString]);
         let fiducial = {
+          'toolType': toolType,
           'id': fiducialCounter[studyInstanceUidString],
           'studyInstanceUid': studyInstanceUid,
           'imageIds': imageIds,

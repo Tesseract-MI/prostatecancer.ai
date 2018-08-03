@@ -10,6 +10,7 @@ import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { bindToMeasurementAdded } from '../../../lib/customCommands.js'
 
+AiPredictions = new Mongo.Collection('aiPredictions', {connection: null});
 Fiducials = new Mongo.Collection('fiducials');
 UserData = new Mongo.Collection('user_data');
 
@@ -55,38 +56,17 @@ async function displayFiducials(instance) {
   const patientName = instance.data.studies[0].patientName;
   const fiducials = Fiducials.find({ ProxID: patientName }).fetch();
   const ClinSigCounter = fiducials.filter(v => v.ClinSig).length;
+  const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
+  const delay = 2000;
 
   if (!(fiducials.length)) {
-      instance.feedbackString.set('No result available for this patient!');
+      $('#feedback-section').append('<p class="text-bold text-center">No result available for this patient.</p>');
       return;
   }
 
-  if (!('pos' in fiducials[0])) {
-      instance.feedbackString.set(''.concat(
-        'Annotations:\n',
-        'Expert radiologist indicated ',
-        fiducials.length.toString(),
-        (fiducials.length === 1) ? ' suspicious area ' : ' suspicious areas ',
-        'for this patient.',
-        '\n\nProcedure:\n',
-        'The patient underwent MR-guidance biopsies.\n\n',
-        'Biopsy results:\n',
-        ClinSigCounter,
-        ' clinical significant',
-        (ClinSigCounter === 1) ? ' finding ' : ' findings ',
-        '(Gleason score 7 or higher) ',
-        (ClinSigCounter === 1) ? 'was ' : 'were ',
-        'reported by pathology.\n\n'
-      ));
-      $('#wwwc').trigger("click");
-  }
-  else {
+  if ('pos' in fiducials[0]) {
       $('#probe').trigger("click");
       await wait(1);
-
-
-      const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
-      const delay = 2000;
 
       $('.imageViewerViewport').each((ind, ele) => {
           const imageId = cornerstone.getEnabledElement(ele).image.imageId;
@@ -131,35 +111,50 @@ async function displayFiducials(instance) {
               bindToMeasurementAdded(ele);
           });
       });
-
-
-      instance.feedbackString.set(''.concat(
-        'Annotations:\n',
-        'Expert radiologist indicated ',
-        fiducials.length.toString(),
-        (fiducials.length === 1) ? ' suspicious area ' : ' suspicious areas ',
-        'for this patient.',
-        '\n\nProcedure:\n',
-        'The patient underwent MR-guidance biopsies.\n\n',
-        'Biopsy results:\n',
-        ClinSigCounter,
-        ' clinical significant',
-        (ClinSigCounter === 1) ? ' finding ' : ' findings ',
-        '(Gleason score 7 or higher) ',
-        (ClinSigCounter === 1) ? 'was ' : 'were ',
-        'reported by pathology.\n\n',
-        'Analysis of your findings:\n',
-        findingsAnalysis(fiducials, studyInstanceUid),
-      ));
-      $('#wwwc').trigger("click");
   }
+
+  $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Fetching data from server!</p>')
+
+  setTimeout(() => {
+    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Adding findings on the view!</p>')
+  }, delay);
+
+  setTimeout(() => {
+    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Calculating distance!</p>')
+  }, (delay * (fiducials.length)) + delay);
+
+  setTimeout(() => {
+    $('#feedback-section').html('<p class="text-bold">Annotations:</p><p>Expert radiologist indicated <span class="text-color">' +
+    fiducials.length.toString().concat((fiducials.length === 1) ? '</span> suspicious area ' : '</span> suspicious areas ') +
+    'for this patient.' +
+    '</p><br>' +
+    '<p class="text-bold">Procedure:</p><p>The patient underwent MR-guidance biopsies.</p><br>' +
+    '<p class="text-bold">Biopsy results:</p><p><span class="text-color">'.concat(
+      ClinSigCounter,
+      '</span> clinical significant',
+      (ClinSigCounter === 1) ? ' finding ' : ' findings ',
+      '(Gleason score 7 or higher) ',
+      (ClinSigCounter <= 1) ? 'was ' : 'were ',
+      'reported by pathology.'
+    )
+     +
+    '</p><br>'.concat((!('pos' in fiducials[0])) ? '' :
+    '<p class="text-bold">Analysis of your findings:</p>'.concat('<p>'.concat(findingsAnalysis(fiducials, studyInstanceUid, true)), '</p>'))
+    );
+  }, (delay * (fiducials.length)) + (2 * delay));
+
+  $('#wwwc').trigger("click");
 }
 
-function findingsAnalysis(fiducials, studyInstanceUid) {
+function findingsAnalysis(fiducials, studyInstanceUid, html = false) {
 
   let str = '';
+  let dict = {};
 
   fiducials.forEach((val) => {
+    if (!(val.pos)) {
+      return;
+    }
     const minDistance = Number.MAX_SAFE_INTEGER;
     const f_id = 0;
     const patientPoint = new cornerstoneMath.Vector3(val.pos.x, val.pos.y, val.pos.z);
@@ -171,15 +166,37 @@ function findingsAnalysis(fiducials, studyInstanceUid) {
         }
     });
     if (f_id) {
-      str = str.concat(
-        'fid '+ f_id + ' is the closest to ',
+      tempStr = ''.concat(
+        html ? '<p>' : '',
+        html ? '<span class="text-color">' : '',
+        'fid '+ f_id ,
+        html ? '</span>' : '',
+        ' is the closest to ',
+        html ? '<span class="text-color">' : '',
         (val.ClinSig) ? 'CSPC-' + val.fid : 'CIPC-' + val.fid,
-        ' with ' + minDistance + ' mm\n'
+        html ? '</span>' : '',
+        ' with ',
+        html ? '<span class="text-color">' : '',
+        minDistance + ' mm',
+        html ? '</span>' : '',
+        html ? '</p>' : '',
       );
+      str = str.concat(tempStr);
+      const f_idStr = f_id.toString();
+      if (dict[f_idStr]) {
+        dict[f_idStr].push(tempStr);
+      } else {
+        dict[f_idStr] = [tempStr];
+      }
     }
   });
 
-  return str;
+  if (html) {
+    return str;
+  } else {
+    return dict;
+  }
+
 }
 
 function makeModelInfoTable() {
@@ -193,7 +210,13 @@ function makeModelInfoTable() {
       html += '<td>' + aiModelsInfo[key] + '</td>';
       html += '</tr>';
       if (key === 'additional info required') {
-          instance.note.set(aiModelsInfo[key] + ' is additionally needed by this model.');
+          if (aiModelsInfo[key] !== '') {
+              Session.set('modelWithZone', true);
+              instance.note.set(aiModelsInfo[key] + ' is additionally needed by this model.');
+          } else {
+              Session.set('modelWithZone', false);
+              instance.note.set('');
+          }
       }
     }
     html += '</tbody></table>'
@@ -207,8 +230,11 @@ function saveUserData(instance) {
 
     fiducialsCollection.find({'studyInstanceUid': studyInstanceUid}).fetch().forEach((value) => {
         let rowId = value.id;
+        let aiScores = AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': rowId}).fetch();
 
         let userData = {
+            toolType: value.toolType,
+            aiScores: aiScores,
             fid: rowId,
             userId: Meteor.userId(),
             patientId: OHIF.viewer.metadataProvider.getMetadata(value.imageIds[0]).patient.id,
@@ -219,7 +245,7 @@ function saveUserData(instance) {
             dwi: $('#dwi-'+rowId).first().val(),
             dce: $('#dce-'+rowId).first().val(),
             pirads: $('#pirads-'+rowId).first().val(),
-            report: findingsAnalysis(fiducials, studyInstanceUid).search('fid '+rowId) ? "" : findingsAnalysis(fiducials, studyInstanceUid).trim(),
+            report: findingsAnalysis(fiducials, studyInstanceUid)[rowId.toString()],
             lps: {
               x: value.patientPoint.x,
               y: value.patientPoint.y,
@@ -248,7 +274,6 @@ Template.measurementTableView.onCreated(() => {
   instance.selectedModel = new ReactiveVar('');
   instance.aiModelsInfo = new ReactiveVar({});
   instance.aiModelsName = new ReactiveVar([]);
-  instance.feedbackString = new ReactiveVar('');
   instance.aiModelsActive = new ReactiveVar(true);
   instance.feedbackActive = new ReactiveVar(true);
   instance.disableReport = new ReactiveVar(false);
@@ -309,10 +334,6 @@ Template.measurementTableView.helpers({
 
   aiModelsName() {
     return Template.instance().aiModelsName.get();
-  },
-
-  getFeedback() {
-    return Template.instance().feedbackString.get();
   },
 
   isFeedbackActive() {
