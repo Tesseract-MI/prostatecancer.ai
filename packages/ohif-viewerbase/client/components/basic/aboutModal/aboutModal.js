@@ -1,5 +1,5 @@
 Template.aboutModal.helpers({
     githubUrl() {
-        return 'https://github.com/ProstateWebViewer/PI-RADS-Trainer';
+        return 'https://github.com/Tesseract-MI/Tesseract';
     }
 });

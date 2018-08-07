@@ -8,7 +8,7 @@ Meteor.startup(function () {
     var server = Meteor.settings && Meteor.settings.mailServerSettings && Meteor.settings.mailServerSettings.server || null;
     var port = Meteor.settings && Meteor.settings.mailServerSettings && Meteor.settings.mailServerSettings.port || null;
     var verifyEmail = Meteor.settings && Meteor.settings.public && Meteor.settings.public.verifyEmail || false;
-    var siteName = Meteor.settings && Meteor.settings.public && Meteor.settings.public.siteName || "PI-RADS Trainer";
+    var siteName = Meteor.settings && Meteor.settings.public && Meteor.settings.public.siteName || "ProstateCancer.ai";
 
     if (username && password && server && port) {
         Accounts.emailTemplates.siteName = siteName;

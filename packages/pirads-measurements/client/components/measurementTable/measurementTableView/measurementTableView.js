@@ -113,14 +113,14 @@ async function displayFiducials(instance) {
       });
   }
 
-  $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Fetching data from server!</p>')
+  $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Fetching data from the server...</p>')
 
   setTimeout(() => {
-    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Adding findings on the view!</p>')
+    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Adding the true results to the views...</p>')
   }, delay);
 
   setTimeout(() => {
-    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Calculating distance!</p>')
+    $('#feedback-section').html('<br><br><br><br><br><br><br><p class="text-bold text-center">Calculating distances...</p>')
   }, (delay * (fiducials.length)) + delay);
 
   setTimeout(() => {
