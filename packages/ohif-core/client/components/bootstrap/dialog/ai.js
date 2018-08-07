@@ -19,21 +19,19 @@ function askAi(data) {
       url: url,
       dataType: "json",
       success: (result) => {
-          setTimeout(() => {
-              $("#ai-prediction").text(result.description);
-              result['fid'] = data.fid;
-              result['studyInstanceUid'] = studyInstanceUid;
-              result['modelName'] = data.model_name;
-              result['zone'] = data.zone;
-              if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
-                  AiPredictions.insert(result);
-              }
-          }, 1000);
+          $("#ai-prediction").text(result.description);
+          result['fid'] = data.fid;
+          result['studyInstanceUid'] = studyInstanceUid;
+          result['modelName'] = data.model_name;
+          result['zone'] = data.zone;
+          if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
+              AiPredictions.insert(result);
+          }
       },
       error: () => {
           setTimeout(() => {
               $("#ai-prediction").text("Somthing went wrong!");
-          }, 1000);
+          }, 300);
       }
     });
 }
@@ -115,8 +113,8 @@ Template.dialogAi.onRendered(() => {
     const event = instance.data.event;
     if (!position && event && event.clientX) {
         position = {
-            x: event.clientX,
-            y: event.clientY
+            x: event.clientX+155,
+            y: event.clientY+130
         };
     }
 

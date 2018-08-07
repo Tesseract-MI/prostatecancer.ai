@@ -28,8 +28,20 @@ const toolType = 'aiFiducial';
 const createDialog = (eventData, measurementData) => {
 
     const nearbyToolData = {};
+    const modelWithZone = Session.get('modelWithZone');
+    const position = {
+        x: eventData.event.clientX+155,
+        y: eventData.event.clientY+140
+    }
     nearbyToolData.toolType = toolType;
     nearbyToolData.tool = measurementData;
+
+    if (modelWithZone) {
+      position = {
+          x: eventData.event.clientX+155,
+          y: eventData.event.clientY+190
+      }
+    }
 
     const dialogSettings = {
         removeCloseButton: true,
@@ -39,10 +51,7 @@ const createDialog = (eventData, measurementData) => {
         confirmClass: 'btn-success',
         cancelClass: 'btn-danger',
         dialogClass: 'modal-sm',
-        position: {
-            x: eventData.event.clientX+155,
-            y: eventData.event.clientY+130
-        }
+        position: position
     };
 
     Session.set('nearbyToolData', nearbyToolData);
