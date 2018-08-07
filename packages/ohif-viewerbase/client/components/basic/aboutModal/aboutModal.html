@@ -35,65 +35,38 @@
               <tbody>
                 <tr>
                     <td>
-                      <p>ProstateCancer.ai Trainer is developed and managed by researchers at <a href="http://medi.cs.queensu.ca/">Medical
-                        Informatics Laboratory</a> at Queen's University and <a href="https://www.spl.harvard.edu/">Surgical
-                          Planning Laboratory</a> at Harvard Medical School.</p>
-                      <br>
-                      <p>
-                        The core image viewer is developed with <a target="_blank" href="https://github.com/ohif/Viewers">OHIF viewer</a>
-                        , <a target="_blank" href="https://github.com/cornerstonejs/cornerstone">Cornerstone</a>, and <a href="https://github.com/QIICR/dcmqi">dcmqi</a>.
-                        PIRADS-Trainer is populated with the <a target="_blank" href="https://wiki.cancerimagingarchive.net/display/Public/SPIE-AAPM-NCI+PROSTATEx+Challenges">data</a> from Radboud University Medical
-                        Centre, Nijmegen containing more than 200 MR images with pathological information.
-                      </p>
-                      <br>
-                      <p>PI-RADS is an acronym for Prostate Imaging Reporting and Data System, defining standards of high quality clinical service for multi-parametric Magnetic Resonance Imaging (mpMRI), including image creation and reporting. PI-RADS v2 document can be found <a href="https://www.acr.org/-/media/ACR/Files/RADS/Pi-RADS/PIRADS-V2.pdf">here</a>.</p>
+                      <p><a target="_blank" href="http://prostatecancer.ai">ProstateCancer.ai</a> is an open-source web-application designed for prostate MRI, developed on
+                      <a target="_blank" href="https://github.com/Tesseract-MI/Tesseract">Tesseract-MedicalImaging</a> platform which enables deployment of AI models while simultaneously
+                      providing standard image viewing and reporting schemes.</p>
+
+                      <p>The core image viewer of ProstateCancer.ai is developed with <a target="_blank" href="https://github.com/ohif/Viewers">OHIF viewer</a> ,
+                      <a target="_blank" href="https://github.com/cornerstonejs/cornerstone">Cornerstone</a>, and
+                      <a target="_blank" href="https://github.com/QIICR/dcmqi">dcmqi</a>. ProstateCancer.ai is populated with the
+                      <a target="_blank" href="https://wiki.cancerimagingarchive.net/display/Public/SPIE-AAPM-NCI+PROSTATEx+Challenges">data</a>
+                      from Radboud University Medical Centre, Nijmegen containing more than 200 MR images with pathological information.</p>
+
+                      <p>AI component is developed with Flask and each AI model is wrapped into an application program interface (API)
+                      endpoint. Prediction time is less than a second for each finding on a CPU machine; however,
+                      models can be written in a way to benefit from the power of GPUs.</p>
                     </td>
                 </tr>
               </tbody>
             </table>
         </div>
         <div class="p-y-1 p-x-1">
-            <h3>Version Information</h3>
+            <h3>Contact</h3>
             <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Repository URL</td>
-                        <td>
-                            <a target='_blank'
-                               href="{{githubUrl}}">{{githubUrl}}</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Last Commit Hash</td>
-                        <td>
-                            <a target='_blank' href="{{githubUrl}}/commit/{{gitRev 'long'}}">
-                            {{gitRev 'long'}}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Latest Tag</td>
-                        <td>
-                            <a target='_blank' href="{{githubUrl}}/releases/tag/{{gitRev 'tag'}}">
-                            {{gitRev 'tag'}}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Branch</td>
-                        <td>
-                            <a target='_blank' href="{{githubUrl}}/tree/{{gitRev 'branch'}}">
-                                {{gitRev 'branch'}}
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
+              <tbody>
+                <tr>
+                    <td>
+                      <p>ProstateCancer.ai is managed by researchers at <a target="_blank" href="http://medi.cs.queensu.ca/">Medical Informatics Laboratory</a>
+                      at Queen's University and <a target="_blank" href="https://www.spl.harvard.edu/">Surgical Planning Laboratory</a> at Harvard Medical School.</p>
+
+                      <p>If you have any questions or potential future collaborations, please feel free to
+                      contact: <a href="mailto:sedghi@cs.queensu.ca">Alireza Sedghi</a> , School of Computing, Queen’s University, Kingston, Ontario</p>
+                    </td>
+                </tr>
+              </tbody>
             </table>
         </div>
     {{/dialogSimple}}
