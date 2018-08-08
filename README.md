@@ -1,4 +1,4 @@
-# prostatecancer.ai
+# ProstateCancer.ai
 
 What you need:
 
