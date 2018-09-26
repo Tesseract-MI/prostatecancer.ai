@@ -81,13 +81,17 @@ export const toolManager = {
             mouse: cornerstoneTools.dragProbe,
             touch: cornerstoneTools.dragProbeTouch
         });
-        toolManager.addTool('probe', {
-            mouse: cornerstoneTools.probe,
-            touch: cornerstoneTools.probeTouch
+        toolManager.addTool('fiducial', {
+            mouse: cornerstoneTools.fiducial,
+            touch: cornerstoneTools.fiducialTouch
         });
         toolManager.addTool('aiFiducial', {
             mouse: cornerstoneTools.aiFiducial,
             touch: cornerstoneTools.aiFiducialTouch
+        });
+        toolManager.addTool('serverProbe', {
+            mouse: cornerstoneTools.serverProbe,
+            touch: cornerstoneTools.serverProbeTouch
         });
         toolManager.addTool('pan', {
             mouse: cornerstoneTools.pan,
@@ -137,6 +141,11 @@ export const toolManager = {
         toolManager.addTool('crosshairs', {
             mouse: cornerstoneTools.crosshairs,
             touch: cornerstoneTools.crosshairsTouch
+        });
+
+        toolManager.addTool('scrollSync', {
+            mouse: cornerstoneTools.scrollSync,
+            touch: cornerstoneTools.scrollSyncTouch
         });
 
         // if a default tool is globally defined, make it the default tool...
@@ -597,6 +606,7 @@ export const toolManager = {
 
         // Enable reactivity
         Session.set('ToolManagerActiveToolUpdated', Random.id());
+        $('body').trigger($.Event('syncViewports'));
     },
 
     getNearbyToolData(element, coords, toolTypes) {

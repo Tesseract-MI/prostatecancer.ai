@@ -1,0 +1,173 @@
+@import "{ohif:design}/app"
+
+.measurementTableView
+
+  .text-bold
+    font-weight: bold
+
+  .table
+    tr
+      td
+        border-top: 1px solid #455a64
+
+  .table-title
+    theme('color', '$defaultColor')
+    padding-left: 20px
+    padding-right: 20px
+    font-weight: bold
+
+  .form-label
+    theme('color', '$defaultColor')
+
+  .note
+    theme('color', '$defaultColor')
+    font-weight: normal
+
+
+  #ai-model-info
+    padding-left: 20px
+    padding-right: 20px
+
+  table
+    theme('color', '$defaultColor')
+
+  form
+    padding-left: 20px
+    padding-right: 20px
+
+  .ai-models
+    theme('background', '$uiGrayDarker');
+    theme('border-color', '$activeColor');
+    color: white;
+
+  .ai-models option
+    theme('background', '$uiGrayDarker');
+    color: white;
+
+  .custom-textarea
+    margin-top: 20px;
+
+  .custom-textarea label
+    theme('color', '$defaultColor')
+
+  textarea
+    resize: none
+    background-color: rgba(0,0,0,0)
+    theme('border-color', '$activeColor')
+    color: white
+
+  .report-area
+    theme('background-color', '$uiGrayDarker')
+    margin-top: 2px
+    padding: 10px 0
+
+  .btn
+    theme('background-color', '$activeColor')
+    theme('border', '1px solid $uiBorderColorActive')
+    color: #000
+    display: table
+    margin: 0 auto
+
+  #feedback-section
+    font-family: Roboto;
+    font-size: 18px;
+    theme('color', '$defaultColor')
+    padding-right: 30px;
+    padding-left: 30px;
+    width: 100%
+    height: 100%
+    overflow-y: scroll
+    &::-webkit-scrollbar-track
+        -webkit-box-shadow inset 0 0 6px rgba(0,0,0,0.3)
+        -moz-box-shadow inset 0 0 6px rgba(0,0,0,0.3)
+        box-shadow inset 0 0 6px rgba(0,0,0,0.3)
+        background-color rgba(0,0,0,1)
+    &::-webkit-scrollbar
+        width 14px
+        background-color #F5F5F5
+    &::-webkit-scrollbar-thumb
+        border-radius 10px
+        background-color #12373D
+    p
+    h2
+    h3
+    h4
+      theme('color', '$defaultColor')
+
+    .text-color
+      color: yellow
+
+    .text-color-red
+      color: red
+
+    .text-color-green
+      color: green
+
+    .text-color-yellow
+      color: yellow
+
+  .report-area
+    margin-top: 2px
+    padding: 10px 0
+
+    .type
+      theme('color', '$textSecondaryColor')
+      font-size: 16px
+      font-weight: 300
+      line-height: $headerRowHeight
+      padding: 0 10px
+      text-align: left
+
+  .message-area
+    margin-top: 2px
+    padding: 10px 0
+
+    .type
+      theme('color', '$textSecondaryColor')
+      font-size: 16px
+      font-weight: 300
+      line-height: $headerRowHeight
+      padding: 0 10px
+      text-align: left
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 5px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 5px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 5px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 5px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 5px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}

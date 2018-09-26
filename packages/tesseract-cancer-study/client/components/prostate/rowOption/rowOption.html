@@ -1,0 +1,100 @@
+<template name="rowOption">
+  <div class="rowOption" id="fid-{{rowItem.id}}">
+    <div class="rowOptions">
+        <br>
+        <form>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <div class="input-group">
+                    <select class="form-control location" id="{{rowItem.id}}">
+                        <option>Apex</option>
+                        <option>Mid</option>
+                        <option>Base</option>
+                        <option>Seminal Vesicles</option>
+                    </select>
+                    <div id="location-side-{{rowItem.id}}" class="input-group-addon location-data">-</div>
+                    <div id="location-pos-{{rowItem.id}}" class="input-group-addon location-data">-</div>
+                </div>
+            </div>
+
+            <br>
+            
+            <script>
+                function notify(e){
+                    let loc = e.target.id.split("_");
+                    let eleId = $('.measurementTableRow.active').find('select').get(0).id;
+                    $('#location-side-' + eleId).text(loc[0]);
+                    $('#location-pos-' + eleId).text(loc[1]);
+                }
+            </script>
+            <div id="location-img-{{rowItem.id}}">
+                <embed src="/images/apex.svg" type="image/svg+xml" width="50%" class="img-responsive center-block" />
+            </div>
+
+            <br>
+
+            <div class="text-center">
+                <div class="form-group col-sm-3">
+                    <label for="t2-{{rowItem.id}}">T2</label>
+                    <div class="input-group">
+                        <input id="t2-{{rowItem.id}}" class="form-control custom-input" type="number" min="1" max="5" value="3">
+                        <div class="input-group-addon custom-input-group-addon">
+                            <div class="row js-increment pointer-cursor">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            </div>
+                            <div class="row js-decrement pointer-cursor">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-3">
+                    <label for="dwi-{{rowItem.id}}">DWI</label>
+                    <div class="input-group">
+                        <input id="dwi-{{rowItem.id}}" class="form-control custom-input" type="number" min="1" max="5" value="3">
+                        <div class="input-group-addon custom-input-group-addon">
+                            <div class="row js-increment pointer-cursor">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            </div>
+                            <div class="row js-decrement pointer-cursor">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-3">
+                    <label for="dce-{{rowItem.id}}">DCE</label>
+                    <div class="input-group">
+                        <input id="dce-{{rowItem.id}}" class="form-control custom-input" type="number" min="1" max="5" value="3">
+                        <div class="input-group-addon custom-input-group-addon">
+                            <div class="row js-increment pointer-cursor">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            </div>
+                            <div class="row js-decrement pointer-cursor">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-3">
+                    <label for="pirads-{{rowItem.id}}">PIRADS</label>
+                    <div class="input-group">
+                        <input id="pirads-{{rowItem.id}}" class="form-control custom-input" type="number" min="1" max="5" value="3">
+                        <div class="input-group-addon custom-input-group-addon">
+                            <div class="row js-increment pointer-cursor">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            </div>
+                            <div class="row js-decrement pointer-cursor">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+</template>

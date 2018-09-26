@@ -93,7 +93,7 @@ Template.toolbarSection.helpers({
         });
 
         buttonData.push({
-            id: 'crosshairs',
+            id: 'scrollSync',
             title: 'Scroll Sync',
             classes: 'imageViewerTool',
             iconClasses: 'fa fa-unsorted'
@@ -107,7 +107,7 @@ Template.toolbarSection.helpers({
         });
 
         buttonData.push({
-            id: 'probe',
+            id: 'fiducial',
             title: 'Fiducial',
             classes: 'imageViewerTool',
             iconClasses: 'fa fa-dot-circle-o'

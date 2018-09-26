@@ -39,7 +39,7 @@ function askAi(data) {
 function buildDataForPrediction(zone) {
     const patientName = OHIF.viewer.StudyMetadataList.all()[0]._data.patientId;
     const modelName = Session.get('selectedModel');
-    const lpsCoord = Session.get('currentFidLps');
+    const lpsCoord = Session.get('currentFidPatientPoint');
 
     const data = {
       fid: Session.get('lastFidId'),

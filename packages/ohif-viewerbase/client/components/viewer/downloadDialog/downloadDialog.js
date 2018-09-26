@@ -8,7 +8,7 @@ import { OHIF } from 'meteor/ohif:core';
 import { cornerstone, cornerstoneTools } from 'meteor/ohif:cornerstone';
 
 OHIF.viewerbase.getImageDownloadDialogAnnotationTools = () => {
-    return ['length', 'probe', 'aiFiducial','simpleAngle', 'arrowAnnotate', 'ellipticalRoi', 'rectangleRoi'];
+    return ['length', 'fiducial', 'serverProbe', 'aiFiducial', 'simpleAngle', 'arrowAnnotate', 'ellipticalRoi', 'rectangleRoi'];
 };
 
 Template.imageDownloadDialog.onCreated(() => {

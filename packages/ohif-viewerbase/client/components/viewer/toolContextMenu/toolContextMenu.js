@@ -3,12 +3,13 @@ import { OHIF } from 'meteor/ohif:core';
 import { cornerstone, cornerstoneTools } from 'meteor/ohif:cornerstone';
 import { toolManager } from '../../../lib/toolManager';
 
-const toolTypes = ['length', 'simpleAngle', 'probe', 'aiFiducial', 'ellipticalRoi', 'rectangleRoi', 'arrowAnnotate'];
+const toolTypes = ['length', 'simpleAngle', 'fiducial', 'serverProbe', 'aiFiducial', 'ellipticalRoi', 'rectangleRoi', 'arrowAnnotate'];
 const TypeToLabelMap = {
     length: 'Length',
     simpleAngle: 'Angle',
-    probe: 'Fiducial',
+    fiducial: 'Fiducial',
     aiFiducial: 'AI Probe',
+    serverProbe: 'Server Probe',
     ellipticalRoi: 'Elliptical ROI',
     rectangleRoi: 'Rectangle ROI',
     arrowAnnotate: 'Annotation'

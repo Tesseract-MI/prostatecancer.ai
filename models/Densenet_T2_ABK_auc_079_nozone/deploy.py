@@ -38,9 +38,7 @@ class Deploy:
         print("successss" * 10)
         scores = np.concatenate(predicted_prob).ravel()
         print("predictions: {} ".format(scores))
-        description = "Low Possibility of Significant Prostate Cancer"
-        if scores[0] > 0.066:  # youden's threhoshold
-            description.replace("Low", "High")
+        description = "{:03.1f}% probability of Significant Prostate Cancer".format(scores[0] * 100)
         response_dict = {"case": self.info["case"],
                          "description": description,
                          "score": str(scores[0])}

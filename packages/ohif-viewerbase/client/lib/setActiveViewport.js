@@ -28,6 +28,8 @@ export function setActiveViewport(element) {
 
     OHIF.log.info(`setActiveViewport setting viewport index: ${viewportIndex}`);
 
+    $('body').trigger($.Event('setActiveViewport'));
+
     // If viewport is not active
     if (!$element.parents('.viewportContainer').hasClass('active')) {
         // Trigger an event for compatibility with other systems

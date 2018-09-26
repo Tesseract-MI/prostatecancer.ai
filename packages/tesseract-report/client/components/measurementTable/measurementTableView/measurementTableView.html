@@ -1,0 +1,52 @@
+<template name="measurementTableView">
+    <div class="{{#if not isResultActive}}hidden{{/if}}">
+        <hr style="margin-top:0;">
+        <div id="feedback-section"></div>
+    </div>
+    {{#if isFeedbackActive}}
+        {{>measurementTableHeaderRow (clone this)}}
+        {{#each rowItem in fiducials}}
+            {{>measurementTableRow (clone this rowItem=rowItem)}}
+        {{/each}}
+        {{#if fiducials}}
+            <div class="form-group col-sm-12 custom-textarea">
+                <label for="fid-comment-{{rowItem.id}}">Comment (optional)</label>
+                <textarea id="comment" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="report-area">
+                <div class="location-warning text-center {{#if isLocationSelected}}hidden{{/if}}">
+                  <p style="color:red">Please choose location for all findings.</p>
+                  <p style="color:red">Hint: The prostate map is clickable.</p>
+                </div>
+                <button class="btn btn-sm {{#if not isReportDisabled}}js-getFeedback{{/if}} {{#if isReportDisabled}}disabled{{/if}}" id="feedback-button">Generate Report</button>
+            </div>
+        {{else}}
+            <div class="message-area">
+                <h4 class="type">In order to add a new finding, please choose Fiducial <i class="fa fa-dot-circle-o" aria-hidden="true"></i> or AI Probe <i class="fa fa-magic" aria-hidden="true"></i> button from toolbar.</h4>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    <div id="ai-section" class="{{#if not isAiModelActive}}hidden{{/if}}">
+      <hr style="margin-top:0;">
+      <form>
+          <div class="form-group">
+              <label class="form-label" for="ai-models">Available Models</label>
+              <select class="form-control ai-models js-aiModelName js-option" id="aiModelName">
+                  {{#each name in aiModelsName}}
+                      <option>{{ name }}</option>
+                  {{/each}}
+              </select>
+          </div>
+      </form>
+      <br>
+      <div class="{{#if not getNote}}hidden{{/if}}">
+        <p class="table-title">Note: <span class="note">{{getNote}}</span></p>
+        <br>
+      </div>
+      <p class="table-title">Model Specifications</p>
+      <div id="ai-model-info"></div>
+    </div>
+
+    <div id="snackbar">Model Selected</div>
+</template>

@@ -1,0 +1,40 @@
+@import "{ohif:design}/app"
+
+.rowOption
+
+  .col-sm-3
+    padding-left: 12px
+    padding-right: 12px
+
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button
+    -webkit-appearance: none
+    margin: 0
+
+  form
+    theme('color', '$defaultColor')
+
+  .location
+    theme('background', '$uiGrayDarker');
+    theme('border-color', '$activeColor');
+    color: white;
+
+  .location option
+    theme('background', '$uiGrayDarker');
+    color: white;
+
+  .input-group-addon
+    theme('background', '$uiGrayDarker');
+    theme('border-color', '$activeColor');
+    color: white;
+
+  .custom-input
+    background-color: rgba(255,255,255,0)
+    color: white
+    theme('border-color', '$activeColor')
+
+  .pointer-cursor
+    cursor: pointer
+
+  .custom-input-group-addon
+    padding-top: 0
+    padding-bottom: 0

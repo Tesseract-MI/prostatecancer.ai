@@ -1,0 +1,15 @@
+<template name="measurementTableRow">
+    <div class="measurementTableRow" id="fid-{{rowItem.id}}">
+        <div class="measurementRowSidebar">
+            <div class="measurementNumber">
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="measurementDetails">
+            <div class='title js-toggle'>
+                Finding {{rowItem.id}}
+            </div>
+            {{>rowOption (clone this rowItem=rowItem)}}
+        </div>
+    </div>
+</template>

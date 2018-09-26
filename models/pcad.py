@@ -8,6 +8,7 @@ import sys
 import requests
 from flask_cors import CORS
 import tensorflow as tf
+
 sys.path.append("./")
 sys.path.append("../")
 
@@ -16,6 +17,7 @@ import models.settings as S
 app = Flask(__name__)
 # app.debug = True
 CORS(app)
+
 
 def safe_mkdir(path):
     try:
@@ -43,31 +45,31 @@ def cach_dicoms(info):
         print(response.json()[0])
 
 
-default_model = "Densenet_T2_ABK_auc_08"
-deployer = importlib.import_module(default_model + ".deploy").Deploy()
-model = deployer.build()
-model._make_predict_function()
-graph=tf.get_default_graph()
+model_uid_1 = "Densenet_T2_ABK_auc_08"
+model_uid_2 = "Densenet_T2_ABK_auc_079_nozone"
+deployer1 = importlib.import_module(model_uid_1 + ".deploy").Deploy()
+model1 = deployer1.build()
+model1._make_predict_function()
+# graph=tf.get_default_graph()
+deployer2 = importlib.import_module(model_uid_2 + ".deploy").Deploy()
+model2 = deployer2.build()
+model2._make_predict_function()
 
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    global default_model
-    global model, deployer
-    global graph
+    global model1, model2
+    global deployer1, deployer2
     info = request.args.to_dict()
     info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
     # cach_dicoms(info)
-    if info["model_name"] != default_model:
-        del deployer
-        deployer = importlib.import_module(info["model_name"] + ".deploy").Deploy()
-        model = deployer.build()
-        model._make_predict_function()
-        graph=tf.get_default_graph()
-        default_model = info["model_name"]
-    with graph.as_default():
-        result = deployer.run(model, info)
+    result = "NA"
+    if info["model_name"] == model_uid_1:
+        result = deployer1.run(model1, info)
+    elif info["model_name"] == model_uid_2:
+        result = deployer2.run(model2, info)
     return result
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
