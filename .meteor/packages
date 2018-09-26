@@ -41,8 +41,13 @@ ohif:study-list
 ohif:dicom-services
 ohif:hanging-protocols
 ohif:metadata
-pirads:core
-pirads:ai
+tesseract:report
+tesseract:sync-tools
+tesseract:sync-scroll
+tesseract:ai
+tesseract:fiducial
+tesseract:server-probe
+tesseract:cancer-study
 
 clinical:active-entry
 clinical:theming
