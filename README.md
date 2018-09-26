@@ -38,7 +38,7 @@ Main app components:
 **tesseract-ai**:
 Components and functionality for AI.
 
-**tesseract-fiducia**:
+**tesseract-fiducial**:
 Similar to cornerstone tools probe with customizable information.
 
 **tesseract-report**:
