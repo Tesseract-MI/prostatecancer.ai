@@ -289,14 +289,16 @@ Template.measurementTableView.onRendered(() => {
   });
 
   // TODO: github will block the call after 60 calls per hour! come up with a better implementation.
-  $.ajax({url: "https://api.github.com/repos/ProstateWebViewer/p-cad/contents/models", success: function(result) {
+  const modelsGitHubOrg = "/Tesseract-MI";
+  const modelsGitHubRepo = "/prostatecancer.ai";
+  $.ajax({url: `https://api.github.com/repos${modelsGitHubOrg}${modelsGitHubRepo}/contents/models`, success: function(result) {
       let nameArr = [];
       let modelsInfoDict = {};
       let url = '';
       result.forEach((val) => {
           if (val.type === 'dir') {
             nameArr.push(val.name);
-            url = "https://raw.githubusercontent.com/ProstateWebViewer/p-cad/master/models/" + val.name + "/info.json"
+            url = `https://raw.githubusercontent.com${modelsGitHubOrg}${modelsGitHubRepo}/master/models/${val.name}/info.json`
             $.ajax({url: url, success: function(res) {
                 modelsInfoDict[val.name] = JSON.parse(res);
                 instance.aiModelsInfo.set(modelsInfoDict);
