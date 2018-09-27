@@ -62,6 +62,8 @@ You need app specific files on App's root directory for deploying to server:
 
 1. Orthanc configuration file **orthanc.json**, generate this file by following <a href="http://book.orthanc-server.com/users/docker.html#id5" target="_blank">this</a> instruction
 2. App configuration **production.env** which is similar to development.env file
+3. In **models** directory run ```docker-compose up -d```
+4. In **main** directory run ```docker-compose up -d```
 
 These files contain all the confirmation and important information like password and server IP for orthanc and MongoDB to connect.
 
