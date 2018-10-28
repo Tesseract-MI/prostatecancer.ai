@@ -163,6 +163,13 @@ Template.toolbarSection.helpers({
         let buttonData = [];
 
         buttonData.push({
+            id: 'feedback',
+            title: 'Feedback',
+            iconClasses: 'fa fa-commenting',
+            buttonTemplateName: 'feedbackButton'
+        });
+
+        buttonData.push({
             id: 'previousPatient',
             title: 'Prev. Patient',
             iconClasses: 'fa fa-step-backward',

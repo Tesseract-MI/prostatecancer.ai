@@ -42,6 +42,9 @@ Package.onUse(function(api) {
     api.addFiles('client/components/previousPatientButton/previousPatientButton.html', 'client');
     api.addFiles('client/components/previousPatientButton/previousPatientButton.js', 'client');
 
+    api.addFiles('client/components/feedbackButton/feedbackButton.html', 'client');
+    api.addFiles('client/components/feedbackButton/feedbackButton.js', 'client');
+
     api.addFiles('client/components/nextPatientButton/nextPatientButton.html', 'client');
     api.addFiles('client/components/nextPatientButton/nextPatientButton.js', 'client');
 

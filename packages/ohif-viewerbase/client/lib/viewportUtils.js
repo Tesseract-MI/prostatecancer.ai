@@ -48,6 +48,10 @@ const getEnabledElementForActiveElement = () => {
     return enabledElement;
 };
 
+const feedback = () => {
+    OHIF.ui.showDialog('feedbackModal');
+};
+
 const zoomIn = () => {
     const element = getActiveViewportElement();
     if (!element) {
@@ -369,6 +373,7 @@ window.addEventListener('cornerstonetoolsclipstopped', () => {
  */
 
 const viewportUtils = {
+    feedback,
     getEnabledElementForActiveElement,
     getEnabledElement,
     getActiveViewportElement,

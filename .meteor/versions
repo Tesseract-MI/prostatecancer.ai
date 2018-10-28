@@ -109,8 +109,6 @@ ohif:user-management@0.0.1
 ohif:viewerbase@0.0.1
 ohif:wadoproxy@0.0.1
 ordered-dict@1.0.9
-pirads:ai@1.0.0
-pirads:core@1.0.0
 promise@0.10.0
 raix:eventemitter@0.1.3
 random@1.0.10
@@ -136,6 +134,13 @@ templating@1.3.2
 templating-compiler@1.3.3
 templating-runtime@1.3.2
 templating-tools@1.1.2
+tesseract:ai@1.0.0
+tesseract:cancer-study@1.0.0
+tesseract:fiducial@1.0.0
+tesseract:report@1.0.0
+tesseract:server-probe@1.0.0
+tesseract:sync-scroll@1.0.0
+tesseract:sync-tools@1.0.0
 tracker@1.1.3
 twbs:bootstrap@3.3.6
 u2622:persistent-session@0.4.4
