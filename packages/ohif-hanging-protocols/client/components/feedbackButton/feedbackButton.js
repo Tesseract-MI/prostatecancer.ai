@@ -9,3 +9,9 @@ Template.feedbackButton.events({
       $(event.currentTarget).tooltip('hide');
     }
 });
+
+Template.feedbackButton.helpers({
+  showFeedback: function (){
+    return Session.get('getFeedback');
+  }
+});
