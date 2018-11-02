@@ -27,6 +27,11 @@ Template.ohifViewer.onCreated(() => {
         icon: 'fa fa-info',
         separatorAfter: true
     }, {
+        action: () => OHIF.ui.showDialog('howToModal'),
+        text: 'How To',
+        icon: 'fa fa-question',
+        separatorAfter: true
+    }, {
         action: OHIF.user.logout,
         text: 'Logout',
         iconClasses: 'logout',
