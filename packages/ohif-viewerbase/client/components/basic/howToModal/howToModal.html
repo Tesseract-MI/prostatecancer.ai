@@ -1,5 +1,423 @@
 <template name="howToModal">
     {{#dialogSimple (extend this id='howToModal' dialogClass='modal-lg' title='How To Use The App')}}
-    <h1>Hello!</h1>
+    <p><b>Overview:</b></p>
+    <p>There is no universal agreement
+    on the definition of clinically significant prostate cancer. PI-RADS
+    v2 intends to standardize reporting of mpMRI scans to reduce
+    variability in interpretations and summarize levels of risk/suspicion
+    for clinically significant cancer.</p>
+    <p><b>Overall Scoring</b></p>
+    <table class="minimalistWhite">
+    	<tr>
+    		<td>
+    			<p>PI-RADS Score</p>
+    		</td>
+    		<td>
+    			<p>Likelihood of clinically significant cancer present</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+    			<p>Very low</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Low</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>Intermediate</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>High</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>Very High</p>
+    		</td>
+    	</tr>
+    </table>
+    <p><br/>
+    <br/>
+
+    </p>
+    <p><b>Location:</b></p>
+    <p>
+    	<img src="/images/locations.png" alt="locations" class="center">
+    </p>
+    <p align="center"><u><b>Components of PI-RADS Overall Scoring</b></u></p>
+    <p><b>T2 Scoring:</b></p>
+    <table class="minimalistWhite">
+    	<tr>
+    		<td>
+    			<p><b>Score</b></p>
+    		</td>
+    		<td>
+    			<p><b>Peripheral Zone (PZ)</b></p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+    			<p>Uniform hypertense signal intensity (normal)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Linear or wedge-shaped hypo-intensity or diffuse mild hypo-intensity usually indistinctn margin</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>Heterogenous signal intensity or non-circumscribed, rounded, moderate hypo-intensity</p>
+    			<br/>
+    			<p>Includes others that do not qualify as 2, 4 or 5</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>Circumscribed, homogenous moderate hypointense focus/mass confined to prostate and &lt; 1.5 cm in greatest dimension</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>1.5 cm in greatest dimension or definite extraprostatic extension/invasive behaviour</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p><b>Score</b></p>
+    		</td>
+    		<td>
+    			<p><b>Transition Zone (TZ)</b></p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+    			<p>Homogenous intermediate signal intensity (normal)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Circumscribed hypointense or heterogenous encapsulated nodules(s) (BPH)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>Heterogenous signal intensity with obscured margins</p>
+    			<br/>
+    			<p>Includes others that do not qualify as 2, 4 or 5</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>Lenticular or non-circumscribed, homogenous, moderately hypointense and &lt; 1.5 cm in greatest dimension</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>≥ 1.5 cm in greatest dimension or definite extraprostatic extension/invasive behaviour</p>
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+    <br/>
+    <p><b>DWI Scoring</b></p>
+    <table class="minimalistWhite">
+    	<tr>
+    		<td>
+    			<p>Score</p>
+    		</td>
+    		<td>
+    			<p>Peripheral Zone (PZ) or Transition Zone (TZ)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+          <p>No abnormality on ADC and high b-value DWI</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Indistinct hypointense on ADC</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>Focal mildly/moderately hypointense on ADC and isointense/mildly hyperintense on high b-value DWI</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>Focal markedly hypointense on ADC and markedly hyperintense on high-b-value DWI;&lt; 1.5cm in greatest dimension</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>≥ 1.5 cm in greatest dimension or definite extraprostatic extension/invasive behaviour</p>
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+    <br/>
+    <p><b>DCE Scoring</b></p>
+    <table class="minimalistWhite">
+    	<tr>
+    		<td>
+    			<p>Score</p>
+    		</td>
+    		<td>
+    			<p>Peripheral Zone (PZ) or Transition Zone (TZ)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>(-)</p>
+    		</td>
+    		<td>
+    			<p>No early enhancement, or diffuse enhancement not corresponding to a focal finding on T2W and/or DWI, or focal enhancement corresponding to a lesion demonstrating features of BPH on T2WI</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>(+)</p>
+    		</td>
+    		<td>
+    			<p>Focal and; earlier than or contemporaneously with enhancement of adjacent normal prostatic tissues and; corresponds to suspicious finding on T2W and/or DWI</p>
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+    <p><b>PI-RADSOverall Scoring- Peripheral Zone (a) and Transition Zone (b)</b></p>
+    <table class="minimalistWhite">
+    	<tr>
+    		<td>
+    			<p>DWI</p>
+    		</td>
+    		<td>
+    			<p>T2W</p>
+    		</td>
+    		<td>
+    			<p>DCE</p>
+    		</td>
+    		<td>
+    			<p>PI-RADS Score (a)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>1</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>2</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>-</p>
+          <p>+</p>
+    		</td>
+    		<td>
+    			<p>3</p>
+          <p>4</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>4</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>5</p>
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+    <table class="minimalistWhite">
+      <tr>
+    		<td>
+    			<p>T2W</p>
+    		</td>
+    		<td>
+    			<p>DWI</p>
+    		</td>
+    		<td>
+    			<p>PI-RADS Category (b)</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>1</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>1</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>2</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>2</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>3</p>
+    		</td>
+    		<td>
+    			<p>≤ 4</p>
+          <p>5</p>
+    		</td>
+    		<td>
+    			<p>3</p>
+          <p>4</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>4</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>4</p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td>
+    			<p>5</p>
+    		</td>
+    		<td>
+    			<p>Any</p>
+    		</td>
+    		<td>
+    			<p>5</p>
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+    <br/>
+    <p>References:</p>
+    <p><a target="_blank" href="https://www.acr.org/-/media/ACR/Files/RADS/Pi-RADS/PIRADS-V2.pdf">https://www.acr.org/-/media/ACR/Files/RADS/Pi-RADS/PIRADS-V2.pdf</a></p>
+    <p>Hassanzadeh E, Glazer D, Dunne R, Fennessy F, Harisinghani M, Tempany C. Prostate
+    imaging reporting and data system version 2 (PI-RADS v2): a pictorial
+    review.&nbsp; Abdominal Radiology. 2016;42(1):278-289. doi:10.1007/s00261-016-0871-z</p>
     {{/dialogSimple}}
 </template>
