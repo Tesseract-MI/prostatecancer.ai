@@ -16,7 +16,7 @@ How to start the app:
     * to install npm packages run: `meteor npm install`
 
 2. In the app directory:
-    * for orthanc run: `METEOR_PACKAGE_DIRS="packages" meteor`
+    * for orthanc run: `METEOR_PACKAGE_DIRS="packages" meteor --settings config/orthancDICOMWeb.json`
     * for dcm4chee run: `METEOR_PACKAGE_DIRS="packages" meteor --settings config/dcm4cheeDICOMWeb.json`
     
 For Developers
