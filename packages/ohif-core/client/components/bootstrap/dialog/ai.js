@@ -1,38 +1,50 @@
-import { Template } from 'meteor/templating';
-import { _ } from 'meteor/underscore';
-import { OHIF } from 'meteor/ohif:core';
-import { Session } from 'meteor/session';
-import { $ } from 'meteor/jquery';
+import {Template} from 'meteor/templating';
+import {_} from 'meteor/underscore';
+import {OHIF} from 'meteor/ohif:core';
+import {Session} from 'meteor/session';
+import {$} from 'meteor/jquery';
 
 AiPredictions = new Mongo.Collection('aiPredictions', {connection: null});
 
 function precise(x) {
-  return Number.parseFloat(x).toPrecision(4);
+    return Number.parseFloat(x).toPrecision(4);
 }
 
 function askAi(data) {
     const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
     const baseUrl = "http://206.189.232.24:5000/predict";
-    const url = baseUrl + "?case="+ data.case +"&model_name="+ data.model_name +"&zone="+ data.zone +"&lps_x="+ data.lps[0] +"&lps_y="+ data.lps[1] +"&lps_z="+ data.lps[2];
+    const url = baseUrl + "?case=" + data.case + "&model_name=" + data.model_name + "&zone=" + data.zone + "&lps_x=" + data.lps[0] + "&lps_y=" + data.lps[1] + "&lps_z=" + data.lps[2];
     $("#ai-prediction").text("Calculating...");
     $.ajax({
-      url: url,
-      dataType: "json",
-      success: (result) => {
-          $("#ai-prediction").text(result.description);
-          result['fid'] = data.fid;
-          result['studyInstanceUid'] = studyInstanceUid;
-          result['modelName'] = data.model_name;
-          result['zone'] = data.zone;
-          if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
-              AiPredictions.insert(result);
-          }
-      },
-      error: () => {
-          setTimeout(() => {
-              $("#ai-prediction").text("Somthing went wrong!");
-          }, 300);
-      }
+        url: url,
+        dataType: "json",
+        success: (result) => {
+            $("#ai-prediction").text(result.description);
+            result['fid'] = data.fid;
+            result['studyInstanceUid'] = studyInstanceUid;
+            result['modelName'] = data.model_name;
+            result['zone'] = data.zone;
+            if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
+                AiPredictions.insert(result);
+            }
+        },
+        error: (jqXHR, exception) => {
+            if (jqXHR.status === 0) {
+                $("#ai-prediction").text('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                $("#ai-prediction").text('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                $("#ai-prediction").text('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                $("#ai-prediction").text('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                $("#ai-prediction").text('Time out error.');
+            } else if (exception === 'abort') {
+                $("#ai-prediction").text('Ajax request aborted.');
+            } else {
+                $("#ai-prediction").text('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
     });
 }
 
@@ -42,11 +54,11 @@ function buildDataForPrediction(zone) {
     const lpsCoord = Session.get('currentFidPatientPoint');
 
     const data = {
-      fid: Session.get('lastFidId'),
-      case: patientName,
-      model_name: modelName,
-      zone: zone,
-      lps: [lpsCoord.x,lpsCoord.y,lpsCoord.z]
+        fid: Session.get('lastFidId'),
+        case: patientName,
+        model_name: modelName,
+        zone: zone,
+        lps: [lpsCoord.x, lpsCoord.y, lpsCoord.z]
     }
 
     return data;
@@ -83,8 +95,8 @@ Template.dialogAi.onCreated(() => {
                 let dataX = data.handles.end.x;
                 let dataY = data.handles.end.y;
                 if (precise(dataX) === precise(probeX) && precise(dataY) === precise(probeY)) {
-                  cornerstoneTools.removeToolState(element, nearbyToolData.toolType, data);
-                  cornerstone.updateImage(element);
+                    cornerstoneTools.removeToolState(element, nearbyToolData.toolType, data);
+                    cornerstone.updateImage(element);
                 }
             });
 
@@ -113,8 +125,8 @@ Template.dialogAi.onRendered(() => {
     const event = instance.data.event;
     if (!position && event && event.clientX) {
         position = {
-            x: event.clientX+155,
-            y: event.clientY+130
+            x: event.clientX + 155,
+            y: event.clientY + 130
         };
     }
 
@@ -133,7 +145,7 @@ Template.dialogAi.events({
 
     keydown(event) {
         const instance = Template.instance(),
-              keyCode = event.keyCode || event.which;
+            keyCode = event.keyCode || event.which;
 
         let handled = false;
 
