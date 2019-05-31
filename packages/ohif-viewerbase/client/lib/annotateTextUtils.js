@@ -36,9 +36,7 @@ const getTextCallback = doneChangingTextCallback => {
     const confirm = dialog.find('.annotationDialogConfirm');
     confirm.off('click');
     confirm.on('click', () => {
-        if(getTextInput.val() !== ''){
-            closeHandler();
-        }
+        closeHandler();
     });
 
     // Use keydown since keypress doesn't handle ESC in Chrome
