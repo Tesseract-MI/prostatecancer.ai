@@ -6,6 +6,7 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "bcrypt": "^2.0.1",
+    "cornerstone-tools": "^3.12.1",
     "fast-csv": "^2.4.1",
     "loglevel": "^1.4.1"
   },
