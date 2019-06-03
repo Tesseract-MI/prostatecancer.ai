@@ -156,6 +156,13 @@ Template.toolbarSection.helpers({
             iconClasses: 'fa fa-adjust'
         });
 
+        buttonData.push({
+            id: 'segment',
+            title: 'Segmentation',
+            classes: 'imageViewerTool',
+            iconClasses: 'fa fa-tint'
+        });
+
         return buttonData;
     },
 
