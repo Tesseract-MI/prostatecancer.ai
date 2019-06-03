@@ -4,7 +4,7 @@ pandas==0.23.3
 SimpleITK==1.1.0
 tqdm==4.24.0
 Keras==2.0.3
-requests==2.19.1
-tensorflow==1.8.0
+requests==2.20.0
+tensorflow==1.12.1
 Flask-Cors==3.0.6
 h5py==2.8.0
