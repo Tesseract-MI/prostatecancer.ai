@@ -16,7 +16,7 @@ fully integrated with the current standard of care in clinic. We have developed
 [prostatecancer.ai](http://prostatecancer.ai/) which enables deployment of AI models in a web-browser while
 simultaneously providing standard image viewing and reporting schemes.
 
-If you're interested in using prostate, but you're not sure it supports
+If you're interested in using prostatecancer.ai, but you're not sure it supports
 your use case [check out our docs](https://github.com/Tesseract-MI/prostatecancer.ai/wiki). Still not sure, or
 you would like to propose new features? Don't hesitate to
 [create an issue](https://github.com/Tesseract-MI/prostatecancer.ai/issues) or open a pull
