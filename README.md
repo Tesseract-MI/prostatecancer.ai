@@ -51,7 +51,7 @@ _Steps:_
 
 ### 💻 Developing Locally 💻
 
-_In your cloned repository's root folder, run::_
+_In your cloned repository's root folder, run:_
 
 1. Restore dependencies:
     * `meteor npm install`
@@ -76,7 +76,7 @@ a 👍. This helps maintainers prioritize what to work on.
 
 ### ❓ Questions ❓
 
-For questions related to using the library, please visit our support community,
+For questions related to using the app, please visit our support community,
 or file an issue on GitHub.
 
 [**See Questions**](https://github.com/Tesseract-MI/prostatecancer.ai/issues)
