@@ -1,4 +1,4 @@
-# prostatecancer.ai [![MIT License][license-image]][license-url]
+# 🔥 prostatecancer.ai [![MIT License][license-image]][license-url]
 __prostatecancer.ai__ is a zero-footprint [DICOMweb](https://www.dicomstandard.org/dicomweb/) medical image viewer that utilizes artificial intelligence technologies to identify clinically significant prostate cancer.
 
 
@@ -6,7 +6,7 @@ __prostatecancer.ai__ is a zero-footprint [DICOMweb](https://www.dicomstandard.o
 [Demo](http://prostatecancer.ai/) |
 [Roadmap](https://github.com/Tesseract-MI/prostatecancer.ai/projects)
 
-## Why?
+## 😲 Why?
 
 Advances in machine learning and deep learning have made it possible to embed the knowledge
 of experienced physician/radiologist into computational models and have shown state-of-the art
@@ -22,7 +22,7 @@ you would like to propose new features? Don't hesitate to
 [create an issue](https://github.com/Tesseract-MI/prostatecancer.ai/issues) or open a pull
 request.
 
-## Getting Started
+## ⏩ Getting Started
 
 This readme is specific to testing and developing locally. If you're more
 interested in production deployment strategies,
@@ -31,7 +31,7 @@ interested in production deployment strategies,
 Want to play around before you dig in?
 [Check out our LIVE Demo](http://prostatecancer.ai/)
 
-### Setup
+### 📏 Setup
 
 _Requirements:_
 
@@ -49,7 +49,7 @@ _Steps:_
 
 - `git remote add upstream git@github.com:Tesseract-MI/prostatecancer.ai.git`
 
-### Developing Locally
+### 💻 Developing Locally
 
 _In your cloned repository's root folder, run::_
 
@@ -81,7 +81,7 @@ or file an issue on GitHub.
 
 [**See Questions**](https://github.com/Tesseract-MI/prostatecancer.ai/issues)
 
-## Roadmap
+## 🔜 Roadmap
 
 If you want to know what's planned for the very near future,
 [check out our roadmap](https://github.com/Tesseract-MI/prostatecancer.ai/projects). The best way to influence when
@@ -99,7 +99,7 @@ become scoped for development by core maintainers.
 > Don't hesitate to ask questions, propose features, or create pull requests.
 > We're here, we're listening, and we're always ready to improve prostatecancer.ai.
 
-## License
+## 🔒 License
 
 MIT © [prostatecancer.ai](https://github.com/Tesseract-MI/prostatecancer.ai)
 
