@@ -97,7 +97,7 @@ More granular information will make its way to the backlog as these items
 become scoped for development by core maintainers.
 
 > Don't hesitate to ask questions, propose features, or create pull requests.
-> We're here, we're listening, and we're always ready to improve prostatecancer.ai.
+> We're here, we're listening, and we're always ready to make prostatecancer.ai the best AI-based medical image viewer in the world 🌎
 
 ## 🔒 License 🔒
 
