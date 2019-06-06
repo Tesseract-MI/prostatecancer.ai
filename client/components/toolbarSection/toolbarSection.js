@@ -157,10 +157,10 @@ Template.toolbarSection.helpers({
         });
 
         buttonData.push({
-            id: 'segment',
-            title: 'Segmentation',
+            id: 'pixelize',
+            title: 'Pixelize',
             classes: 'imageViewerTool',
-            iconClasses: 'fa fa-tint'
+            iconClasses: 'fa fa-low-vision'
         });
 
         return buttonData;
