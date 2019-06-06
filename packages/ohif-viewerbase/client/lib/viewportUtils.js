@@ -122,6 +122,22 @@ const invert = () => {
     cornerstone.setViewport(element, viewport);
 };
 
+const pixelize = () => {
+    const element = getActiveViewportElement();
+    if (!element) {
+        return;
+    }
+
+    const viewport = cornerstone.getViewport(element);
+
+    const enabledElement = cornerstone.getEnabledElement(element);
+    const imageId = enabledElement.image.imageId;
+    console.log(OHIF.viewer.metadataProvider.getMetadata(imageId));
+
+    viewport.pixelReplication = (viewport.pixelReplication === false);
+    cornerstone.setViewport(element, viewport);
+};
+
 const flipV = () => {
     const element = getActiveViewportElement();
     const viewport = cornerstone.getViewport(element);
@@ -383,6 +399,7 @@ const viewportUtils = {
     rotateL,
     rotateR,
     invert,
+    pixelize,
     flipV,
     flipH,
     resetViewport,
