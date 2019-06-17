@@ -1,75 +1,104 @@
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 import importlib
-import json
 import os
 import shutil
-from keras import backend as K
-from flask import Flask, request
-import sys
+from requests.auth import HTTPBasicAuth
+from orthanc_rest_client import Orthanc
 import requests
-from flask_cors import CORS
-import tensorflow as tf
-
-sys.path.append("./")
-sys.path.append("../")
-
-import models.settings as S
+import SimpleITK as sitk
 
 app = Flask(__name__)
-# app.debug = True
 CORS(app)
+auth = HTTPBasicAuth('orthanc', 'orthanc')
+orthanc = Orthanc('http://localhost:8042/', auth=auth)
 
+@app.route('/getProbability', methods=['GET', 'POST'])
+def getProbability():
+    data = request.get_json()
+    global case
+    case = data.get('case')
+    prepare_dicom()
+    model_uid_2 = "Densenet_T2_ABK_auc_079_nozone"
+    deployer2 = importlib.import_module(model_uid_2 + ".deploy").Deploy()
+    model2 = deployer2.build()
+    model2._make_predict_function()
+    result = deployer2.run(model2, data)
+    return jsonify(result)
 
-def safe_mkdir(path):
-    try:
-        os.mkdir(path)
-    except OSError:
-        pass
+def prepare_dicom():
+    if (not os.path.exists("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases")):
+        os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases")
 
+    if (not os.path.exists("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case)):
+        os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case)
+        create_t2()
+        create_adc()
+        create_bval()
+        create_ktrans()
 
-def cach_dicoms(info):
-    url = "http://162.243.174.237:8042/"
-    if info["case"] not in os.listdir(S.dicom_folder):
-        patient_folder = os.path.join(S.dicom_folder, info["case"])
-        safe_mkdir(patient_folder)
-        post_query = {"Level": "Instance", "Query": {"PatientName": info["case"]}}
-        response = requests.post(url + "tools/find", data=json.dumps(post_query),
-                                 auth=("**", "**"))
-        for enum, instance_id in enumerate(response.json()):
-            dicom = requests.get(url + "/instances/" + str(instance_id) + "/file",
-                                 stream=True,
-                                 auth=("**", "**"))
-            with open(os.path.join(patient_folder, str(enum)), 'wb') as out_file:
-                shutil.copyfileobj(dicom.raw, out_file)
-            del dicom
-        print("*" * 100)
-        print(response.json()[0])
+def create_t2():
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2")
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2\\dcm")
+    query = {'Level': 'Instance',
+                'Query': {'PatientName': case, 'SeriesDescription': '*t2*'},
+            }
+    for instance_id in orthanc.find(query):
+        create_dcm_file(instance_id, 't2')
 
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2\\nrrd")    
+    convert_dcm_to_nrrd('t2')
 
-model_uid_1 = "Densenet_T2_ABK_auc_08"
-model_uid_2 = "Densenet_T2_ABK_auc_079_nozone"
-deployer1 = importlib.import_module(model_uid_1 + ".deploy").Deploy()
-model1 = deployer1.build()
-model1._make_predict_function()
-# graph=tf.get_default_graph()
-deployer2 = importlib.import_module(model_uid_2 + ".deploy").Deploy()
-model2 = deployer2.build()
-model2._make_predict_function()
+def create_adc():
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc")
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc\\dcm")
+    query = {'Level': 'Instance',
+                'Query': {'PatientName': case, 'SeriesDescription': '*adc*'},
+            }
+    for instance_id in orthanc.find(query):
+        create_dcm_file(instance_id, 'adc')
 
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc\\nrrd")   
+    convert_dcm_to_nrrd('adc')
 
-@app.route('/predict', methods=['GET'])
-def predict():
-    global model1, model2
-    global deployer1, deployer2
-    info = request.args.to_dict()
-    info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
-    # cach_dicoms(info)
-    result = "NA"
-    if info["model_name"] == model_uid_1:
-        result = deployer1.run(model1, info)
-    elif info["model_name"] == model_uid_2:
-        result = deployer2.run(model2, info)
-    return result
+def create_bval():
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval")
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval\\dcm")
+    query = {'Level': 'Instance',
+                'Query': {'PatientName': case, 'SeriesDescription': '*bval*'},
+            }
+    for instance_id in orthanc.find(query):
+        create_dcm_file(instance_id, 'bval')
 
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval\\nrrd")  
+    convert_dcm_to_nrrd('bval')
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+def create_ktrans():
+    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\ktrans")
+    query = {'Level': 'Instance',
+                'Query': {'PatientName': case, 'SeriesDescription': '*ktrans*'},
+            }
+    for instance_id in orthanc.find(query):
+        create_dcm_file(instance_id, 'ktrans')
+    convert_dcm_to_nrrd('ktrans')
+
+def create_dcm_file(instance_id, folderName):
+    if (folderName == 'ktrans'):
+        fileName = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\ktrans.dcm"
+    else:
+        fileName = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\"+ folderName + "\\dcm\\" + instance_id + ".dcm"
+
+    with open(fileName, 'wb') as dcm:
+     for chunk in orthanc.get_instance_file(instance_id):
+         dcm.write(chunk)
+
+def convert_dcm_to_nrrd(folderName):
+    if (folderName == 'ktrans'):
+        os.system("docker run -v C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\ktrans:/tmp/dcmqi qiicr/dcmqi paramap2itkimage --outputDirectory /tmp/dcmqi/ --inputDICOM /tmp/dcmqi/ktrans.dcm")
+    else:
+        reader = sitk.ImageSeriesReader()
+        directory_to_add_nrrd_file = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\dcm"
+        dicom_reader = reader.GetGDCMSeriesFileNames(directory_to_add_nrrd_file)
+        reader.SetFileNames(dicom_reader)
+        dicoms = reader.Execute()
+        sitk.WriteImage(dicoms, "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\nrrd\\" + folderName + ".nrrd")
