@@ -28,12 +28,13 @@ def getProbability():
 
 def prepare_dicom():
     create_dir(os.path.abspath("cases"))
-    create_dir(os.path.abspath("cases/"+ case))
 
-    create_sub_dir('t2')
-    create_sub_dir('adc')
-    create_sub_dir('bval')
-    create_sub_dir('ktrans')
+    if (not os.path.exists(os.path.abspath("cases/"+ case))):
+        create_dir(os.path.abspath("cases/"+ case))
+        create_sub_dir('t2')
+        create_sub_dir('adc')
+        create_sub_dir('bval')
+        create_sub_dir('ktrans')
 
 def create_sub_dir(seriesType):
     create_dir(os.path.abspath("cases/"+ case + "/" + seriesType))

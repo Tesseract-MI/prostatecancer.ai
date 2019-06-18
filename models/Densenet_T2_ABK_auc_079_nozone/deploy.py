@@ -24,7 +24,7 @@ class Deploy:
         loaded_model_json = json_file.read()
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
-        loaded_model.load_weights("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\Densenet_T2_ABK_auc_079_nozone\\model\\model_checkpoint.hdf5")
+        loaded_model.load_weights(os.path.abspath("Densenet_T2_ABK_auc_079_nozone/model/model_checkpoint.hdf5"))
         return loaded_model
 
     def run(self, model, info):
@@ -54,13 +54,13 @@ class Deploy:
 
     def read_image(self, image_type):
         if (image_type == 'Ktrans'):
-            image = sitk.ReadImage("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + self.case + "\\ktrans\\pmap.nrrd")
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/ktrans/pmap.nrrd"))
         elif (image_type == 't2_tse_tra'):
-            image = sitk.ReadImage("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + self.case + "\\t2\\nrrd\\t2.nrrd")
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/t2/nrrd/t2.nrrd"))
         elif (image_type == 'BVAL'):
-            image = sitk.ReadImage("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + self.case + "\\bval\\nrrd\\bval.nrrd")
-        else:
-            image = sitk.ReadImage("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + self.case + "\\adc\\nrrd\\adc.nrrd")
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/bval/nrrd/bval.nrrd"))
+        elif (image_type == 'ADC'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/adc/nrrd/adc.nrrd"))
 
         image = self.resample_image(image, image_type)
         image_prep = preprocess(image=image,
