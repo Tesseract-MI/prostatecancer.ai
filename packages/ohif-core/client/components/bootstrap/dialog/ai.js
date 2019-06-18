@@ -22,10 +22,10 @@ function askAi(data) {
             console.log(json.description);
             $("#ai-prediction").text(json.description);
             json.fid = data.fid;
-            json.studyInstanceUid = studyInstanceUid;
+            json.studyInstanceUid = data.studyInstanceUid;
             json.modelName = data.model_name;
             json.zone = data.zone;
-            if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
+            if (AiPredictions.find({'studyInstanceUid': data.studyInstanceUid, 'fid': data.fid}).count() < 15) {
                 AiPredictions.insert(json);
             }
         },

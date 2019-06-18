@@ -27,78 +27,49 @@ def getProbability():
     return jsonify(result)
 
 def prepare_dicom():
-    if (not os.path.exists("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases")):
-        os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases")
+    create_dir(os.path.abspath("cases"))
+    create_dir(os.path.abspath("cases/"+ case))
 
-    if (not os.path.exists("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case)):
-        os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case)
-        create_t2()
-        create_adc()
-        create_bval()
-        create_ktrans()
+    create_sub_dir('t2')
+    create_sub_dir('adc')
+    create_sub_dir('bval')
+    create_sub_dir('ktrans')
 
-def create_t2():
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2")
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2\\dcm")
+def create_sub_dir(seriesType):
+    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType))
+    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm"))
+
+    seriesDescription = "*" + seriesType + "*"
     query = {'Level': 'Instance',
-                'Query': {'PatientName': case, 'SeriesDescription': '*t2*'},
+                'Query': {'PatientName': case, 'SeriesDescription': seriesDescription},
             }
     for instance_id in orthanc.find(query):
-        create_dcm_file(instance_id, 't2')
+        create_dcm_file(instance_id, seriesType)
 
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\t2\\nrrd")    
-    convert_dcm_to_nrrd('t2')
+    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType + "/nrrd"))    
+    convert_dcm_to_nrrd(seriesType)
 
-def create_adc():
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc")
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc\\dcm")
-    query = {'Level': 'Instance',
-                'Query': {'PatientName': case, 'SeriesDescription': '*adc*'},
-            }
-    for instance_id in orthanc.find(query):
-        create_dcm_file(instance_id, 'adc')
-
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\adc\\nrrd")   
-    convert_dcm_to_nrrd('adc')
-
-def create_bval():
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval")
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval\\dcm")
-    query = {'Level': 'Instance',
-                'Query': {'PatientName': case, 'SeriesDescription': '*bval*'},
-            }
-    for instance_id in orthanc.find(query):
-        create_dcm_file(instance_id, 'bval')
-
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\bval\\nrrd")  
-    convert_dcm_to_nrrd('bval')
-
-def create_ktrans():
-    os.mkdir("C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\ktrans")
-    query = {'Level': 'Instance',
-                'Query': {'PatientName': case, 'SeriesDescription': '*ktrans*'},
-            }
-    for instance_id in orthanc.find(query):
-        create_dcm_file(instance_id, 'ktrans')
-    convert_dcm_to_nrrd('ktrans')
-
-def create_dcm_file(instance_id, folderName):
-    if (folderName == 'ktrans'):
-        fileName = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\ktrans.dcm"
+def create_dcm_file(instance_id, seriesType):
+    if (seriesType == 'ktrans'):
+    	fileName = os.path.abspath("cases/"+ case + "/" + seriesType + "/ktrans.dcm")
     else:
-        fileName = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\"+ folderName + "\\dcm\\" + instance_id + ".dcm"
+    	fileName = os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm/" + instance_id + ".dcm")
 
     with open(fileName, 'wb') as dcm:
      for chunk in orthanc.get_instance_file(instance_id):
          dcm.write(chunk)
 
-def convert_dcm_to_nrrd(folderName):
-    if (folderName == 'ktrans'):
-        os.system("docker run -v C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\ktrans:/tmp/dcmqi qiicr/dcmqi paramap2itkimage --outputDirectory /tmp/dcmqi/ --inputDICOM /tmp/dcmqi/ktrans.dcm")
+def convert_dcm_to_nrrd(seriesType):
+    if (seriesType == 'ktrans'):
+        os.system("docker run -v " + os.path.abspath("cases/"+ case + "/ktrans") + ":/tmp/dcmqi qiicr/dcmqi paramap2itkimage --outputDirectory /tmp/dcmqi/ --inputDICOM /tmp/dcmqi/ktrans.dcm")
     else:
         reader = sitk.ImageSeriesReader()
-        directory_to_add_nrrd_file = "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\dcm"
+        directory_to_add_nrrd_file = os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm")
         dicom_reader = reader.GetGDCMSeriesFileNames(directory_to_add_nrrd_file)
         reader.SetFileNames(dicom_reader)
         dicoms = reader.Execute()
-        sitk.WriteImage(dicoms, "C:\\Users\\14ot3\\Desktop\\prostateCancer\\models\\cases\\" + case + "\\" + folderName + "\\nrrd\\" + folderName + ".nrrd")
+        sitk.WriteImage(dicoms, os.path.abspath("cases/"+ case + "/" + seriesType + "/nrrd/" + seriesType + ".nrrd"))
+
+def create_dir(path):
+    if (not os.path.exists(path)):
+        os.mkdir(path)
