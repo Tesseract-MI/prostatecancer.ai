@@ -19,11 +19,21 @@ def getProbability():
     global case
     case = data.get('case')
     prepare_dicom()
+
+    model_uid_1 = "Densenet_T2_ABK_auc_08"
     model_uid_2 = "Densenet_T2_ABK_auc_079_nozone"
-    deployer2 = importlib.import_module(model_uid_2 + ".deploy").Deploy()
-    model2 = deployer2.build()
-    model2._make_predict_function()
-    result = deployer2.run(model2, data)
+
+    if data.get("model_name") == model_uid_1:
+        deployer2 = importlib.import_module(model_uid_2 + ".deploy").Deploy()
+        model2 = deployer2.build()
+        model2._make_predict_function()
+        result = deployer2.run(model2, data)
+    elif data.get("model_name") == model_uid_2:
+        deployer1 = importlib.import_module(model_uid_1 + ".deploy").Deploy()
+        model1 = deployer1.build()
+        model1._make_predict_function()
+        result = deployer1.run(model1, data)
+    
     return jsonify(result)
 
 def prepare_dicom():
