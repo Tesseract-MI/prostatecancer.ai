@@ -4,8 +4,6 @@ import os
 import shutil
 from keras import backend as K
 from flask import Flask, request
-from requests.auth import HTTPBasicAuth
-from orthanc_rest_client import Orthanc
 import sys
 import requests
 from flask_cors import CORS
@@ -19,8 +17,6 @@ import models.settings as S
 app = Flask(__name__)
 # app.debug = True
 CORS(app)
-auth = HTTPBasicAuth('orthanc', 'orthanc')
-orthanc = Orthanc('http://192.241.141.88:8042/', auth=auth)
 
 
 def safe_mkdir(path):
@@ -62,7 +58,6 @@ model2._make_predict_function()
 
 @app.route('/predict', methods=['GET'])
 def predict():
-	prepare_dicom()
     global model1, model2
     global deployer1, deployer2
     info = request.args.to_dict()
@@ -74,55 +69,6 @@ def predict():
     elif info["model_name"] == model_uid_2:
         result = deployer2.run(model2, info)
     return result
-
-def prepare_dicom():
-    create_dir(os.path.abspath("cases"))
-
-    if (not os.path.exists(os.path.abspath("cases/"+ case))):
-        create_dir(os.path.abspath("cases/"+ case))
-        create_sub_dir('t2')
-        create_sub_dir('adc')
-        create_sub_dir('bval')
-        create_sub_dir('ktrans')
-
-def create_sub_dir(seriesType):
-    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType))
-    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm"))
-
-    seriesDescription = "*" + seriesType + "*"
-    query = {'Level': 'Instance',
-                'Query': {'PatientName': case, 'SeriesDescription': seriesDescription},
-            }
-    for instance_id in orthanc.find(query):
-        create_dcm_file(instance_id, seriesType)
-
-    create_dir(os.path.abspath("cases/"+ case + "/" + seriesType + "/nrrd"))    
-    convert_dcm_to_nrrd(seriesType)
-
-def create_dcm_file(instance_id, seriesType):
-    if (seriesType == 'ktrans'):
-    	fileName = os.path.abspath("cases/"+ case + "/" + seriesType + "/ktrans.dcm")
-    else:
-    	fileName = os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm/" + instance_id + ".dcm")
-
-    with open(fileName, 'wb') as dcm:
-     for chunk in orthanc.get_instance_file(instance_id):
-         dcm.write(chunk)
-
-def convert_dcm_to_nrrd(seriesType):
-    if (seriesType == 'ktrans'):
-        os.system("docker run -v " + os.path.abspath("cases/"+ case + "/ktrans") + ":/tmp/dcmqi qiicr/dcmqi paramap2itkimage --outputDirectory /tmp/dcmqi/ --inputDICOM /tmp/dcmqi/ktrans.dcm")
-    else:
-        reader = sitk.ImageSeriesReader()
-        directory_to_add_nrrd_file = os.path.abspath("cases/"+ case + "/" + seriesType + "/dcm")
-        dicom_reader = reader.GetGDCMSeriesFileNames(directory_to_add_nrrd_file)
-        reader.SetFileNames(dicom_reader)
-        dicoms = reader.Execute()
-        sitk.WriteImage(dicoms, os.path.abspath("cases/"+ case + "/" + seriesType + "/nrrd/" + seriesType + ".nrrd"))
-
-def create_dir(path):
-    if (not os.path.exists(path)):
-        os.mkdir(path)    
 
 
 if __name__ == '__main__':
