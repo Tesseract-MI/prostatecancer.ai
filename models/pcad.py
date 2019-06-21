@@ -60,7 +60,7 @@ model2._make_predict_function()
 def predict():
     global model1, model2
     global deployer1, deployer2
-    info = data = request.get_json()
+    info = request.get_json()
     result = "NA"
     if info["model_name"] == model_uid_1:
         result = deployer1.run(model1, info)

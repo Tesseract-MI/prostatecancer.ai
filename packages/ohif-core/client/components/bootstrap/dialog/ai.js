@@ -11,7 +11,7 @@ function precise(x) {
 }
 
 function askAi(data) {
-    setDialogText("Calculating...");
+    $("#ai-prediction").text("Calculating...");
     $.ajax({
         url: 'http://192.241.141.88:5000/predict',
         type: 'POST',
@@ -20,7 +20,7 @@ function askAi(data) {
         success: (result) => {
             let json = JSON.parse(result);
             console.log(json.description);
-            setDialogText(json.description)
+            $("#ai-prediction").text(json.description)
             json.fid = data.fid;
             json.studyInstanceUid = data.studyInstanceUid;
             json.modelName = data.model_name;
