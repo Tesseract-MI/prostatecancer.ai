@@ -24,7 +24,7 @@ class Deploy:
         loaded_model_json = json_file.read()
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
-        loaded_model.load_weights(self.current_dir + "/model/model_checkpoint.hdf5")
+        loaded_model.load_weights(os.path.abspath("Densenet_T2_ABK_auc_079_nozone/model/model_checkpoint.hdf5"))
         return loaded_model
 
     def run(self, model, info):
@@ -53,16 +53,21 @@ class Deploy:
         return resample_new_spacing(image, target_spacing=voxel_resampling_dict[image_type])
 
     def read_image(self, image_type):
-        image_paths = glob(
-            os.path.join(S.nrrd_folder, self.case + '*' + image_type + '*.nrrd'))
-        print(image_paths)
-        assert len(image_paths) == 1, print(self.case, "more than one image or zero")
-        image = sitk.ReadImage(image_paths[0])
+        if (image_type == 'Ktrans'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/ktrans/pmap.nrrd"))
+        elif (image_type == 't2_tse_tra'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/t2/nrrd/t2.nrrd"))
+        elif (image_type == 'BVAL'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/bval/nrrd/bval.nrrd"))
+        elif (image_type == 'ADC'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/adc/nrrd/adc.nrrd"))
+
         image = self.resample_image(image, image_type)
         image_prep = preprocess(image=image,
                                 window_intensity_dict=self.datagen_dict_prep["window_intensity"],
                                 zero_scale_dict=self.datagen_dict_prep["rescale_zero_one"])
         return image_prep
+
 
     def extract_patches(self):
         zone_encoding = np.zeros((1, 3), dtype=np.float32)
