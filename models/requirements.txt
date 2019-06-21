@@ -8,3 +8,4 @@ requests==2.20.0
 tensorflow==1.12.2
 Flask-Cors==3.0.6
 h5py==2.8.0
+orthanc-rest-client==0.5.4

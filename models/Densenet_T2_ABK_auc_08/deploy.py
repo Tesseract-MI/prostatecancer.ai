@@ -52,11 +52,14 @@ class Deploy:
         return resample_new_spacing(image, target_spacing=voxel_resampling_dict[image_type])
 
     def read_image(self, image_type):
-        image_paths = glob(
-            os.path.join(S.nrrd_folder, self.case + '*' + image_type + '*.nrrd'))
-        print(image_paths)
-        assert len(image_paths) == 1, print(self.case, "more than one image or zero")
-        image = sitk.ReadImage(image_paths[0])
+        if (image_type == 'Ktrans'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/ktrans/pmap.nrrd"))
+        elif (image_type == 't2_tse_tra'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/t2/nrrd/t2.nrrd"))
+        elif (image_type == 'BVAL'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/bval/nrrd/bval.nrrd"))
+        elif (image_type == 'ADC'):
+            image = sitk.ReadImage(os.path.abspath("cases/" + self.case + "/adc/nrrd/adc.nrrd"))
         image = self.resample_image(image, image_type)
         image_prep = preprocess(image=image,
                                 window_intensity_dict=self.datagen_dict_prep["window_intensity"],
