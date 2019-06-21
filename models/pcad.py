@@ -3,7 +3,7 @@ import json
 import os
 import shutil
 from keras import backend as K
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import sys
 import requests
 from flask_cors import CORS
@@ -60,7 +60,7 @@ model2._make_predict_function()
 def predict():
     global model1, model2
     global deployer1, deployer2
-    info = request.args.to_dict()
+    info = request.get_json()
     info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
     # cach_dicoms(info)
     result = "NA"
@@ -68,7 +68,7 @@ def predict():
         result = deployer1.run(model1, info)
     elif info["model_name"] == model_uid_2:
         result = deployer2.run(model2, info)
-    return result
+    return jsonify(result)
 
 
 if __name__ == '__main__':

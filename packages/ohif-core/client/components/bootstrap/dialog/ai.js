@@ -11,28 +11,26 @@ function precise(x) {
 }
 
 function askAi(data) {
-    const studyInstanceUid = OHIF.viewerbase.layoutManager.viewportData[Session.get('activeViewport')]['studyInstanceUid'];
-    const baseUrl = "http://192.241.141.88:5000/predict";
-    const url = baseUrl + "?case="+ data.case +"&model_name="+ data.model_name +"&zone="+ data.zone +"&lps_x="+ data.lps[0] +"&lps_y="+ data.lps[1] +"&lps_z="+ data.lps[2];
     $("#ai-prediction").text("Calculating...");
     $.ajax({
-      url: url,
-      dataType: "json",
-      success: (result) => {
-          $("#ai-prediction").text(JSON.parse(result));
-          result['fid'] = data.fid;
-          result['studyInstanceUid'] = studyInstanceUid;
-          result['modelName'] = data.model_name;
-          result['zone'] = data.zone;
-          if (AiPredictions.find({'studyInstanceUid': studyInstanceUid, 'fid': data.fid}).count() < 15) {
-              AiPredictions.insert(result);
-          }
-      },
-      error: () => {
-          setTimeout(() => {
-              $("#ai-prediction").text("Something went wrong!");
-          }, 300);
-      }
+        url: 'http://192.241.141.88:5000/predict',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: (result) => {
+            let json = JSON.parse(result);
+            console.log(json.description);
+            $("#ai-prediction").text(json.description)
+            json.fid = data.fid;
+            json.studyInstanceUid = data.studyInstanceUid;
+            json.modelName = data.model_name;
+            json.zone = data.zone;
+            if (AiPredictions.find({'studyInstanceUid': data.studyInstanceUid, 'fid': data.fid}).count() < 15) {
+                AiPredictions.insert(json);
+            }
+        },
+        error: () => {
+        }
     });
 }
 
