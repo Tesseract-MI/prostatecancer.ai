@@ -19,7 +19,7 @@ function askAi(data) {
       url: url,
       dataType: "json",
       success: (result) => {
-          $("#ai-prediction").text(result);
+          $("#ai-prediction").text(result.description);
           result['fid'] = data.fid;
           result['studyInstanceUid'] = studyInstanceUid;
           result['modelName'] = data.model_name;
