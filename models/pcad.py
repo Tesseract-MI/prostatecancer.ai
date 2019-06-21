@@ -11,7 +11,7 @@ import SimpleITK as sitk
 app = Flask(__name__)
 CORS(app)
 auth = HTTPBasicAuth('orthanc', 'orthanc')
-orthanc = Orthanc('http://localhost:8042/', auth=auth)
+orthanc = Orthanc('http://192.241.141.88:8042/', auth=auth)
 
 @app.route('/getProbability', methods=['GET', 'POST'])
 def getProbability():

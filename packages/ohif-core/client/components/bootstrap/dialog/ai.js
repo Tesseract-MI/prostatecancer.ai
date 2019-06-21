@@ -6,21 +6,23 @@ import {$} from 'meteor/jquery';
 
 AiPredictions = new Mongo.Collection('aiPredictions', {connection: null});
 
+let convert = {}
+
 function precise(x) {
     return Number.parseFloat(x).toPrecision(4);
 }
 
 function askAi(data) {
-    $("#ai-prediction").text("Calculating...");
+    setDialogText("Calculating...");
     $.ajax({
-        url: 'http://127.0.0.1:5000/getProbability',
+        url: 'http://192.241.141.88:5000/getProbability',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: (result) => {
             let json = JSON.parse(result);
             console.log(json.description);
-            $("#ai-prediction").text(json.description);
+            setDialogText(json.description)
             json.fid = data.fid;
             json.studyInstanceUid = data.studyInstanceUid;
             json.modelName = data.model_name;
@@ -34,6 +36,14 @@ function askAi(data) {
     });
 }
 
+function setDialogText(s){
+    $("#ai-prediction").text(s);
+}
+
+convert.test= function (s){
+    return s;
+}
+module.exports = convert;
 function buildDataForPrediction(zone) {
     const patientName = OHIF.viewer.StudyMetadataList.all()[0]._data.patientId;
     const modelName = Session.get('selectedModel');
