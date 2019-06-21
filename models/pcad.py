@@ -68,7 +68,6 @@ def predict():
         result = deployer1.run(model1, info)
     elif info["model_name"] == model_uid_2:
         result = deployer2.run(model2, info)
-    result['description'] = "lol"
     return result
 
 
