@@ -1,0 +1,12 @@
+<template name="freehandSetNameDialogs">
+  <dialog
+    id="freehandSetNameDialog"
+    class="freehand-set-name-dialog noselect"
+    oncontextmenu="return false"
+  >
+    <div>
+      {{> React component=FreehandSetNameDialog defaultName=defaultName
+      callback=callback key=id}}
+    </div>
+  </dialog>
+</template>

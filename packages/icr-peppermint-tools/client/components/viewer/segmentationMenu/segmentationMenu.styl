@@ -1,0 +1,84 @@
+@import "{ohif:design}/app"
+@import "../peppermint-table.styl"
+
+.segmentation-menu
+  theme('color', '$textPrimaryColor')
+  z-index: 1000
+
+  text-align: center
+  height: 100%
+
+  .segmentation-menu-component
+    height: 100%
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: center
+
+  h3
+    font-weight: 400
+
+  .segmentation-menu-header
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    width: 100%
+
+    a
+      height: 30px
+      width: 80px
+
+  .segmentation-menu-list-bordered
+    border-width: 1px
+    border-top-style: solid
+    border-bottom-style: solid
+
+  .segmentation-menu-new-button
+    float: center
+    width: 100%
+
+
+  .segmentation-menu-list
+    //height: calc(90% - 400px)
+    padding-right: 18px
+    padding-left: 18px
+    width: 100%
+    overflow-y: auto
+    overflow-x: hidden
+    word-wrap: break-word
+    theme('scrollbar-color', '$textSecondaryColor $uiGrayDarkest')
+
+    &::-webkit-scrollbar
+      them('background', '$uiGrayDarkest')
+      width: 10px
+
+    &::-webkit-scrollbar-thumb
+      theme('background', '$textSecondaryColor')
+      border-radius: 10px
+      theme('border-right', '2px solid $uiGrayDarkest')
+
+    .segmentation-menu-name-link
+      theme('color', '$textPrimaryColor')
+
+      &:hover
+        theme('color', '$textSecondaryColor')
+
+  .segmentation-menu-footer
+    margin: 10px
+    padding: 10px
+    theme('background', '$uiGrayDark')
+    theme('border', '1px solid $uiBorderColor')
+
+    select
+      width: 80%
+      text-align: center
+      margin: 0 auto
+
+    label
+      font-weight: 400
+      float: left

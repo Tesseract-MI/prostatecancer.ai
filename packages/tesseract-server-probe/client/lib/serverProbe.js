@@ -118,16 +118,16 @@ function onImageRendered (e) {
 // /////// END IMAGE RENDERING ///////
 
 // Module exports
-cornerstoneTools.serverProbe = cornerstoneTools.mouseButtonTool({
-  createNewMeasurement,
-  onImageRendered,
-  pointNearTool,
-  toolType
-});
+// cornerstoneTools.serverProbe = cornerstoneTools.mouseButtonTool({
+//   createNewMeasurement,
+//   onImageRendered,
+//   pointNearTool,
+//   toolType
+// });
 
-cornerstoneTools.serverProbeTouch = cornerstoneTools.touchTool({
-  createNewMeasurement,
-  onImageRendered,
-  pointNearTool,
-  toolType
-});
+// cornerstoneTools.serverProbeTouch = cornerstoneTools.touchTool({
+//   createNewMeasurement,
+//   onImageRendered,
+//   pointNearTool,
+//   toolType
+// });

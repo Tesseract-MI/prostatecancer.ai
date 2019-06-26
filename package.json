@@ -6,9 +6,13 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "bcrypt": "^2.0.1",
-    "cornerstone-tools": "^3.12.1",
+    "cornerstone-tools": "^3.13.0",
     "fast-csv": "^2.4.1",
-    "loglevel": "^1.4.1"
+    "loglevel": "^1.4.1",
+    "mousetrap": "^1.6.3",
+    "n-dimensional-flood-fill": "^1.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {},
   "scripts": {

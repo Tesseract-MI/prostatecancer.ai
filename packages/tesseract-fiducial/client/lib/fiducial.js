@@ -142,16 +142,16 @@ function onImageRendered (e) {
 // /////// END IMAGE RENDERING ///////
 
 // Module exports
-cornerstoneTools.fiducial = cornerstoneTools.mouseButtonTool({
-  createNewMeasurement,
-  onImageRendered,
-  pointNearTool,
-  toolType
-});
+// cornerstoneTools.fiducial = cornerstoneTools.mouseButtonTool({
+//   createNewMeasurement,
+//   onImageRendered,
+//   pointNearTool,
+//   toolType
+// });
 
-cornerstoneTools.fiducialTouch = cornerstoneTools.touchTool({
-  createNewMeasurement,
-  onImageRendered,
-  pointNearTool,
-  toolType
-});
+// cornerstoneTools.fiducialTouch = cornerstoneTools.touchTool({
+//   createNewMeasurement,
+//   onImageRendered,
+//   pointNearTool,
+//   toolType
+// });

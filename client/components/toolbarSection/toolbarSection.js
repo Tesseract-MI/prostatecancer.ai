@@ -36,11 +36,18 @@ Template.toolbarSection.helpers({
             key: 'leftSidebar',
             value: instance.data.state,
             options: [{
-                value: 'studies',
-                svgLink: '/packages/ohif_viewerbase/assets/icons.svg#icon-studies',
+                value: 'segmentationMenu',
+                svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-seg-management-menu',
                 svgWidth: 15,
                 svgHeight: 13,
-                bottomLabel: 'Series'
+                bottomLabel: 'Segments'
+            },
+            {
+                value: 'roiContourMenu',
+                svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-freehand-switch-volume',
+                svgWidth: 15,
+                svgHeight: 13,
+                bottomLabel: 'Contours'
             }]
         };
     },
@@ -56,6 +63,13 @@ Template.toolbarSection.helpers({
                 value: 'hangingprotocols',
                 iconClasses: 'fa fa-file-text-o',
                 bottomLabel: 'Report'
+            },
+            {
+                value: 'segmentationMenu',
+                svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-seg-management-menu',
+                svgWidth: 15,
+                svgHeight: 13,
+                bottomLabel: 'Segments'
             }]
         };
     },
@@ -64,12 +78,40 @@ Template.toolbarSection.helpers({
         const extraTools = [];
         const buttonData = [];
 
-        buttonData.push({
+        const actionTools = [
+        {
             id: 'resetViewport',
             title: 'Reset',
             classes: 'imageViewerCommand',
             iconClasses: 'fa fa-undo'
-        });
+        },
+        {
+            id: 'toggleDownloadDialog',
+            title: 'Snapshot',
+            classes: 'imageViewerCommand',
+            iconClasses: 'fa fa-camera',
+            active: () => $('#downloadDialog').is(':visible')
+        },
+        {
+            id: 'invert',
+            title: 'Invert',
+            classes: 'imageViewerCommand',
+            iconClasses: 'fa fa-adjust'
+        },
+        {
+            id: 'pixelize',
+            title: 'Pixelize',
+            classes: 'imageViewerTool',
+            iconClasses: 'fa fa-low-vision'
+        }
+        ]
+
+        // buttonData.push({
+        //     id: 'resetViewport',
+        //     title: 'Reset',
+        //     classes: 'imageViewerCommand',
+        //     iconClasses: 'fa fa-undo'
+        // });
 
         buttonData.push({
             id: 'zoom',
@@ -141,26 +183,75 @@ Template.toolbarSection.helpers({
             iconClasses: 'fa fa-square'
         });
 
-        buttonData.push({
-            id: 'toggleDownloadDialog',
-            title: 'Snapshot',
-            classes: 'imageViewerCommand',
-            iconClasses: 'fa fa-camera',
-            active: () => $('#downloadDialog').is(':visible')
-        });
+        // buttonData.push({
+        //     id: 'toggleDownloadDialog',
+        //     title: 'Snapshot',
+        //     classes: 'imageViewerCommand',
+        //     iconClasses: 'fa fa-camera',
+        //     active: () => $('#downloadDialog').is(':visible')
+        // });
 
-        buttonData.push({
-            id: 'invert',
-            title: 'Invert',
-            classes: 'imageViewerCommand',
-            iconClasses: 'fa fa-adjust'
-        });
+        // buttonData.push({
+        //     id: 'invert',
+        //     title: 'Invert',
+        //     classes: 'imageViewerCommand',
+        //     iconClasses: 'fa fa-adjust'
+        // });
 
-        buttonData.push({
-            id: 'pixelize',
-            title: 'Pixelize',
+        // buttonData.push({
+        //     id: 'pixelize',
+        //     title: 'Pixelize',
+        //     classes: 'imageViewerTool',
+        //     iconClasses: 'fa fa-low-vision'
+        // });
+
+        const brushTools = [
+          {
+            id: 'brush',
+            title: 'Manual (B)',
             classes: 'imageViewerTool',
-            iconClasses: 'fa fa-low-vision'
+            svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-brush-regular'
+          },
+          {
+            id: 'brushHUGated',
+            title: 'Smart CT',
+            classes: 'imageViewerTool',
+            svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-brush-smart'
+          },
+          {
+            id: 'brushAutoGated',
+            title: 'Auto',
+            classes: 'imageViewerTool',
+            svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-brush-auto'
+          },
+          {
+            id: 'eraser',
+            title: 'Eraser (E)',
+            classes: 'imageViewerTool',
+            iconClasses: 'fa fa-eraser'
+          },
+          {
+              id: 'clearTools',
+              title: 'Clear',
+              classes: 'imageViewerCommand',
+              iconClasses: 'fa fa-trash'
+          }
+        ];
+
+        buttonData.push({
+            id: 'Brush',
+            title: 'Segment',
+            classes: 'rp-x-1 rm-l-3',
+            svgLink: 'packages/icr_peppermint-tools/assets/icons.svg#icon-segmentation-menu',
+            subTools: brushTools
+        });
+
+        buttonData.push({
+            id: 'Brush',
+            title: 'Extra',
+            classes: 'rp-x-1 rm-l-3',
+            iconClasses: 'fa fa-plus',
+            subTools: actionTools
         });
 
         return buttonData;

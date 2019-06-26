@@ -1,0 +1,29 @@
+@import "{ohif:design}/app"
+
+.freehand-set-name-dialog
+  theme('border', '1px solid $uiBorderColor', 0.95)
+  theme('background', '$uiGrayDarkest', 0.95)
+  theme('color', '$textSecondaryColor')
+  z-index: 1000
+
+  max-height: calc(100% - 100px)
+  max-width: calc(100% - 100px)
+  position: absolute
+  margin: auto
+
+  margin: auto
+  overflow: hidden
+  padding: 10px
+  border-radius: 8px
+  text-align: center
+
+  .freehand-set-name-horizontal-box
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+
+  h3
+    font-weight: 400

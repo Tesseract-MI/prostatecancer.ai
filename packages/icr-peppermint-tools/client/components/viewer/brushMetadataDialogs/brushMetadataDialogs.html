@@ -1,0 +1,12 @@
+<template name="brushMetadataDialogs">
+  <dialog
+    id="brushMetadataDialog"
+    class="brush-metadata-dialog noselect"
+    oncontextmenu="return false"
+  >
+    <div>
+    {{> React component=BrushMetadataDialog segIndex=segIndex metadata=metadata
+    callback=callback key=id}}
+    </div>
+  </dialog>
+</template>

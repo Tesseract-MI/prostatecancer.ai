@@ -1,0 +1,81 @@
+@import "{ohif:design}/app"
+@import "../peppermint-table.styl"
+
+.roi-contour-menu
+  theme('color', '$textPrimaryColor')
+  z-index: 1000
+
+  text-align: center
+  height: 100%
+
+  .roi-contour-menu-component
+    height: 100%
+
+  h3
+    font-weight: 400
+
+  .roi-contour-menu-header
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    padding-right: 18px
+    padding-left: 18px
+    width: 100%
+
+    a
+      height: 30px
+      width: 80px
+
+  .roi-contour-menu-collection-list-body
+    height: calc(90% - 180px)
+    padding-right: 18px
+    padding-left: 18px
+    overflow-y: auto
+    overflow-x: hidden
+    theme('scrollbar-color', '$textSecondaryColor $uiGrayDarkest')
+    word-wrap: break-word
+
+    &::-webkit-scrollbar
+      them('background', '$uiGrayDarkest')
+      width: 10px
+
+    &::-webkit-scrollbar-thumb
+      theme('background', '$textSecondaryColor')
+      border-radius: 10px
+      theme('border-right', '2px solid $uiGrayDarkest')
+
+    .roi-contour-menu-name-link
+      theme('color', '$textPrimaryColor')
+
+      &:hover
+        theme('color', '$textSecondaryColor')
+
+  .roi-contour-menu-new-button
+    float: center
+    width: 100%
+
+  .roi-list-header
+    border-width: 1px
+    border-top-style: solid
+    border-bottom-style: solid
+
+  .roi-contour-menu-footer
+    margin: 10px
+    padding: 10px
+    theme('background', '$uiGrayDark')
+    theme('border', '1px solid $uiBorderColor')
+
+    .roi-contour-menu-option
+      display: -webkit-flex
+      display: -ms-flexbox
+      display: flex
+      flex-direction: column
+      align-items: center
+
+      svg
+        background-color: transparent
+        width: 50px
+        height: 50px

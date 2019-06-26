@@ -7,7 +7,18 @@
             {{> viewerMain (clone this)}}
         </div>
         <div class="sidebarMenu sidebar-right {{#if rightSidebarOpen}}sidebar-open{{/if}}">
+          {{#if rightSidebarReportMenu}}
             {{> measurementTable (clone this)}}
+          {{/if}}
+          {{#if rightSidebarSegmentationMenu}}
+            <div class="segmentation-menu">
+              {{> React component=SegmentationMenu
+                key=segmentationMenuId
+                ImportCallbackOrComponent=segmentationMenuImportComponent
+                ExportCallbackOrComponent=segmentationMenuExportComponent
+              }}
+            </div>
+          {{/if}}
         </div>
     </div>
 </template>
