@@ -56,11 +56,13 @@ model2 = deployer2.build()
 model2._make_predict_function()
 
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
     global model1, model2
     global deployer1, deployer2
-    info = request.get_json()
+    info = request.args.to_dict()
+    info["lps"] = list(map(float, [info["lps_x"], info["lps_y"], info["lps_z"]]))
+    # cach_dicoms(info)
     result = "NA"
     if info["model_name"] == model_uid_1:
         result = deployer1.run(model1, info)
