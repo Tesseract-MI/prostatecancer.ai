@@ -1,5 +1,5 @@
 Flask==0.12.3
-numpy==1.15.0
+numpy==1.22.0
 pandas==0.23.3
 SimpleITK==1.1.0
 tqdm==4.24.0
